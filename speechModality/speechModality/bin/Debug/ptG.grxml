@@ -6,24 +6,27 @@
 			<ruleref uri="#object"/>
 			<tag>out.shape=rules.latest();</tag>
 		  </item>
-		  <item>
+      <!-- <item>
 			<ruleref uri="#color"/>
 			<tag>out.color=rules.latest();</tag>
-		  </item>
+		  </item>-->
 	  </item>
 	</rule>
 	<rule id="object">
 	  <one-of>
-		<item>quadrado<tag>out="SQUARE"</tag></item>
-		<item>círculo<tag>out="CIRCLE"</tag></item>
-		<item>triângulo<tag>out="TRIANGLE"</tag></item>
+		<item>quadrado<tag>out.object="SQUARE"</tag></item>
+		<item>círculo<tag>out.object="CIRCLE"</tag></item>
+		<item>triângulo<tag>out.object="TRIANGLE"</tag></item>
+    <item>mano<tag>out.object="MANO"</tag></item>
+      <item>mcdonalds<tag>out.object="MCDONALD'S"</tag>
+    </item>
 	  </one-of>
 	</rule>
-	<rule id="color">
+	<!--<rule id="color">
 	  <one-of>
 		<item>verde<tag>out="GREEN"</tag></item>
 		<item>azul<tag>out="BLUE"</tag></item>
 		<item>vermelho<tag>out="RED"</tag></item>
 	  </one-of>
-	</rule>
+	</rule>-->
 </grammar>
