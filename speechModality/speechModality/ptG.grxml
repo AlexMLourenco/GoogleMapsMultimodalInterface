@@ -2,31 +2,110 @@
 <grammar xml:lang="pt-PT" version="1.0" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
 	<rule id="rootRule" scope="public">
 	  <item>
-		  <item>
-			<ruleref uri="#object"/>
-			<tag>out.shape=rules.latest();</tag>
-		  </item>
-      <!-- <item>
-			<ruleref uri="#color"/>
-			<tag>out.color=rules.latest();</tag>
-		  </item>-->
+      <item repeat="0-1"><ruleref uri="#change"/><tag>out.change=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#source"/><tag>out.source=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#brands"/><tag>out.brands=rules.latest();</tag></item>
 	  </item>
 	</rule>
-	<rule id="object">
-	  <one-of>
-		<item>quadrado<tag>out.object="SQUARE"</tag></item>
-		<item>círculo<tag>out.object="CIRCLE"</tag></item>
-		<item>triângulo<tag>out.object="TRIANGLE"</tag></item>
-    <item>mano<tag>out.object="MANO"</tag></item>
-      <item>mcdonalds<tag>out.object="MCDONALD'S"</tag>
-    </item>
-	  </one-of>
-	</rule>
-	<!--<rule id="color">
-	  <one-of>
-		<item>verde<tag>out="GREEN"</tag></item>
-		<item>azul<tag>out="BLUE"</tag></item>
-		<item>vermelho<tag>out="RED"</tag></item>
-	  </one-of>
-	</rule>-->
+  
+  <!-- Rules for the search -->
+  <rule id="search">
+    <one-of>
+      <item>procura<tag>out.action="SEARCH"</tag></item>
+      <item>procurar<tag>out.action="SEARCH"</tag></item>
+      <item>existe<tag>out.action="SEARCH"</tag></item>
+      <item>encontra<tag>out.action="SEARCH"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">um</item>
+      <item repeat="0-1">uma</item>
+      <item repeat="0-1">algum</item>
+      <item repeat="0-1">nas proximidades</item>
+      <item repeat="0-1">nas redondezas</item>
+      <item repeat="0-1">por perto</item>
+      <item repeat="0-1">aqui perto</item>
+    </one-of>
+  </rule>
+
+  <!-- Diferent services -->
+  <rule id="consume">
+    <one-of>
+      <item>restaurante<tag>out.service="RESTAURANTE"</tag></item>
+      <item>bar<tag>out.service="BAR"</tag></item>
+      <item>café<tag>out.service="CAFÉ"</tag></item>
+      <item>pastelaria<tag>out.service="PADARIA"</tag></item>
+      <item>hotel<tag>out.service="HOTEL"</tag></item>
+      <item>policia<tag>out.service="PSP"</tag></item>
+      <item>caixa geral<tag>out.service="CGD"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">um</item>
+      <item repeat="0-1">uma</item>
+      <item repeat="0-1">outro</item>
+      <item repeat="0-1">nas proximidades</item>
+      <item repeat="0-1">nas redondezas</item>
+      <item repeat="0-1">por perto</item>
+      <item repeat="0-1">aqui perto</item>
+    </one-of>
+  </rule>
+
+  <!-- Rule for a specific local-->
+  <rule id="brands">
+    <one-of>
+      <item>mcdonalds<tag>out.local="MCDONALD'S"</tag></item>
+      <item>continente<tag>out.local="CONTINENTE"</tag></item>
+      <item>forum<tag>out.local="FORUM"</tag></item>
+      <item>glicinias<tag>out.local="GLICINIAS"</tag></item>
+      <item>altice<tag>out.local="ALTICE"</tag></item>
+      <item>ria<tag>out.local="RIA"</tag></item>
+      
+    </one-of>
+  </rule>
+
+  <!-- Rules for the change of source -->
+  <rule id="change">
+    <one-of>
+      <item>trocar<tag>out.action="CHANGE"</tag></item>
+      <item>troca<tag>out.action="CHANGE"</tag></item>
+      <item>modificar<tag>out.action="CHANGE"</tag></item>
+      <item>modifica<tag>out.action="CHANGE"</tag></item>
+      <item>alterar<tag>out.action="CHANGE"</tag></item>
+      <item>altera<tag>out.action="CHANGE"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">o</item>
+      <item repeat="0-1">local</item>
+      <item repeat="0-1">de</item>
+      <item repeat="0-1">a</item>
+    </one-of>
+  </rule>
+
+  <!-- Diferent services -->
+  <rule id="source">
+    <one-of>
+      <item>origem<tag>out.source="ORIGEM"</tag></item>
+      <item>começo<tag>out.source="ORIGEM"</tag></item>
+      <item>inicio<tag>out.source="ORIGEM"</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- Rules for getting current position -->
+  <rule id="position">
+    <one-of>
+      <item>atual<tag>out.action="GET"</tag></item>
+      <item>agora<tag>out.action="GET"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">diz-me</item>
+      <item repeat="0-1">qual</item>
+      <item repeat="0-1">é</item>
+      <item repeat="0-1">a</item>
+      <item repeat="0-1">minha</item>
+      <item repeat="0-1">posição</item>
+    </one-of>
+  </rule>
+
 </grammar>
