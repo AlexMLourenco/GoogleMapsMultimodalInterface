@@ -3,7 +3,8 @@
 	<rule id="rootRule" scope="public">
 	  <item>
       <item repeat="0-1"><ruleref uri="#change"/><tag>out.change=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#source"/><tag>out.source=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
@@ -30,7 +31,7 @@
     </one-of>
   </rule>
 
-  <!-- Diferent services -->
+  <!-- Rules for diferent services -->
   <rule id="consume">
     <one-of>
       <item>restaurante<tag>out.service="RESTAURANTE"</tag></item>
@@ -83,12 +84,22 @@
     </one-of>
   </rule>
 
-  <!-- Diferent services -->
-  <rule id="source">
+  <!-- Rules for sub actions (Changes) -->
+  <rule id="subaction">
     <one-of>
-      <item>origem<tag>out.source="ORIGEM"</tag></item>
-      <item>começo<tag>out.source="ORIGEM"</tag></item>
-      <item>inicio<tag>out.source="ORIGEM"</tag></item>
+      <item>meio de transporte<tag>out.subaction="TRANSPORTE"</tag></item>
+      <item>transporte<tag>out.subaction="TRANSPORTE"</tag></item>
+      <item>agora<tag>out.subaction="ORIGEM"</tag></item>
+      <item>começo<tag>out.subaction="ORIGEM"</tag></item>
+      <item>inicio<tag>out.subaction="ORIGEM"</tag></item>
+      <item>origem<tag>out.subaction="ORIGEM"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">para</item>
+      <item repeat="0-1">da</item>
+      <item repeat="0-1">viagem</item>
+      <item repeat="0-1">do</item>
+      <item repeat="0-1">percurso</item>
     </one-of>
   </rule>
 
@@ -107,5 +118,18 @@
       <item repeat="0-1">posição</item>
     </one-of>
   </rule>
-
+  
+  <!-- Rules for changing transports -->
+  <rule id="transport">
+    <one-of>
+      <item>carro<tag>out.transport="CARRO"</tag></item>
+      <item>pé<tag>out.transport="PÉ"</tag></item>
+      <item>caminhar<tag>out.transport="PÉ"</tag></item>
+      <item>bicicleta<tag>out.transport="BICICLETA"</tag></item>
+      <item>metro<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
+      <item>autocarro<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
+      <item>transportes públicos<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
+    </one-of>
+  </rule>
+  
 </grammar>

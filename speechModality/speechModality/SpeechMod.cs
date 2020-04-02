@@ -26,6 +26,9 @@ namespace speechModality {
         private MmiCommunication mmic;
         private Tts t;
 
+        private String mode = "driving";
+        private GoogleMapsAPI api = new GoogleMapsAPI();
+
         public SpeechMod() {
             //init LifeCycleEvents..
             lce = new LifeCycleEvents("ASR", "FUSION","speech-1", "acoustic", "command"); // LifeCycleEvents(string source, string target, string id, string medium, string mode)
@@ -73,7 +76,7 @@ namespace speechModality {
                 dynamic tojson = JsonConvert.DeserializeObject(json);
                 Console.WriteLine(tojson);
 
-                if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 2) {
+                if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) {
                     t.Speak("Utilize só um comando de cada vez.");
                 }
                 else {
@@ -83,82 +86,30 @@ namespace speechModality {
                             switch ((string)tojson.action.ToString()) {
                                 case "SEARCH":
                                     if ((string)tojson.service != null) {
-                                        if ((string)tojson.service.ToString() == "RESTAURANTE")
-                                            Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null);
-                                        else if ((string)tojson.service.ToString() == "BAR")
-                                            Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null);
-                                        else if ((string)tojson.service.ToString() == "CAFÉ")
-                                            Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null);
-                                        else if ((string)tojson.service.ToString() == "HOTEL")
-                                            Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null);
-                                        else if ((string)tojson.service.ToString() == "PSP")
-                                            Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null);
-                                        else if ((string)tojson.service.ToString() == "CGD")
-                                            Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null);
-
+                                         // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                        t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode));
                                     } else if ((string)tojson.local != null ) {
-                                        if ((string)tojson.local.ToString() == "MCDONALD'S")
-                                            Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString());
-                                        else if ((string)tojson.local.ToString() == "CONTINENTE")
-                                            Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString());
-                                        else if ((string)tojson.local.ToString() == "FORUM")
-                                            Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString());
-                                        else if ((string)tojson.local.ToString() == "GLICINIAS")
-                                            Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString());
-                                        else if ((string)tojson.local.ToString() == "ALTICE")
-                                            Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString());
-                                        else if ((string)tojson.local.ToString() == "RIA")
-                                            Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString());
+                                        // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                        t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode));
                                     }
                                     break;
+                                case "CHANGE":
+                                    if (tojson.subaction == "TRANSPORTE") {
+                                        // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
+                                        mode = (string)tojson.transport.ToString();
+                                        t.Speak(string.Format("Modo de transporte alterado para {0}", mode));
+                                    }
+                                    else if (tojson.subaction == "ORIGEM") {
+                                        t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
+                                    }
+                                        break;
                             }
                         } else {  t.Speak("Olá"); }
                     });
-
                     var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
                     mmic.Send(exNot);
                 }   
             }
         }
-
-        private void Nearby(String tojson, String service, String local) {
-
-            string URL = "";
-            if (local == null) {
-                Random rand = new Random();
-                int id = rand.Next(1, 100);
-                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro+" + id + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service);
-            } else {
-                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local);
-            }
-            Console.WriteLine(URL);
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            try {
-                string distancia = "";
-                WebResponse response = request.GetResponse();
-                using (Stream responseStream = response.GetResponseStream()) {
-                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
-                    dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
-                    distancia = (string)tojson2.routes[0].legs[0].distance.value.ToString();
-                    //return reader.ReadToEnd();
-                    if (local == null) {
-                        t.Speak(string.Format("O {0} fica a {1} metros da sua localização", service, distancia));
-                    } else {
-                        t.Speak(string.Format("O {0} fica a {1} metros da sua localização", local, distancia));
-                    }
-                }
-            } catch (WebException ex) {
-                WebResponse errorResponse = ex.Response;
-                using (Stream responseStream = errorResponse.GetResponseStream()) {
-                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
-                    String errorText = reader.ReadToEnd();
-                    t.Speak("Algo de errado aconteceu");
-                    // log errorText
-                } throw;
-            }
-     
-        }
-
     }
 }
