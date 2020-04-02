@@ -47,7 +47,6 @@ namespace speechModality {
             sre.RecognizeAsync(RecognizeMode.Multiple);
             sre.SpeechRecognized += Sre_SpeechRecognized;
             sre.SpeechHypothesized += Sre_SpeechHypothesized;
-
         }
 
         private void Sre_SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e) {
@@ -60,9 +59,6 @@ namespace speechModality {
             if (e.Result.Confidence < 0.5) {
                 t.Speak("Desculpe não percebi. Repita por favor.");
             } else {
-                //  {"destino": mcdonalds,
-                //     "local": Forum aveiro
-                //string json = "{ \"recognized\": [";
                 string json = "{\n";
                 foreach (var resultSemantic in e.Result.Semantics) { 
                     foreach (var key in resultSemantic.Value) {
@@ -95,12 +91,18 @@ namespace speechModality {
                                     break;
                                 case "CHANGE":
                                     if (tojson.subaction == "TRANSPORTE") {
-                                        // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
-                                        mode = (string)tojson.transport.ToString();
-                                        t.Speak(string.Format("Modo de transporte alterado para {0}", mode));
+                                        if ((string)tojson.transport != null) {
+                                            // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
+                                            mode = api.Translate((string)tojson.transport.ToString());
+                                            t.Speak(string.Format("Modo de transporte alterado para {0}", (string)tojson.transport.ToString()));
+                                        } else {
+                                            t.Speak("falta");
+                                        }
                                     }
                                     else if (tojson.subaction == "ORIGEM") {
                                         t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
+                                    } else {
+                                        t.Speak("Cê é burro");
                                     }
                                         break;
                             }

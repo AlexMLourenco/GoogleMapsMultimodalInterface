@@ -123,8 +123,8 @@
   <rule id="transport">
     <one-of>
       <item>carro<tag>out.transport="CARRO"</tag></item>
-      <item>pé<tag>out.transport="PÉ"</tag></item>
-      <item>caminhar<tag>out.transport="PÉ"</tag></item>
+      <item>a pé<tag>out.transport="A PÉ"</tag></item>
+      <item>caminhar<tag>out.transport="A PÉ"</tag></item>
       <item>bicicleta<tag>out.transport="BICICLETA"</tag></item>
       <item>metro<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
       <item>autocarro<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
