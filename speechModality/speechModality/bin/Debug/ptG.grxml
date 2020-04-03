@@ -42,8 +42,12 @@
       <item>café<tag>out.service="CAFÉ"</tag></item>
       <item>pastelaria<tag>out.service="PADARIA"</tag></item>
       <item>hotel<tag>out.service="HOTEL"</tag></item>
+      <item>hospital<tag>out.service="HOSTITAL"</tag> </item>
       <item>policia<tag>out.service="PSP"</tag></item>
       <item>caixa geral<tag>out.service="CGD"</tag></item>
+      <item>banco<tag>out.service="BANCO"</tag></item>
+      <item>bancos<tag>out.service="BANCO"</tag></item>
+      <item>multibanco<tag>out.service="ATM"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">um</item>

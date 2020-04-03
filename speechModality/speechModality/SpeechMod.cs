@@ -58,7 +58,7 @@ namespace speechModality {
 
             if (e.Result.Confidence < 0.5) {
                 t.Speak("Desculpe não percebi. Repita por favor.");
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(2000);
             } else {
                 string json = "{\n";
                 foreach (var resultSemantic in e.Result.Semantics) { 
@@ -73,10 +73,8 @@ namespace speechModality {
                 dynamic tojson = JsonConvert.DeserializeObject(json);
                 Console.WriteLine(tojson);
 
-                if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) {
-                    t.Speak("Utilize só um comando de cada vez.");
-                }
-                else {
+                if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) { t.Speak("Utilize só um comando de cada vez.");
+                } else {
                     App.Current.Dispatcher.Invoke(() => {
                         if (tojson.action != null) {
                             switch ((string)tojson.action.ToString()) {
