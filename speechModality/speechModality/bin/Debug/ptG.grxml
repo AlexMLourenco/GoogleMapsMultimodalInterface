@@ -6,11 +6,17 @@
       <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#info"/><tag>out.info=rules.latest();</tag></item>
+      
       <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
+      <item repeat="0-1">
+        <ruleref uri="#info"/>
+        <tag>out.info=rules.latest();</tag>
+      </item>
       <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#brands"/><tag>out.brands=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#spots"/><tag>out.spots=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#location"/><tag>out.location=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>
+      
 	  </item>
 	</rule>
   
@@ -56,7 +62,7 @@
   </rule>
 
   <!-- Rule for a specific local-->
-  <rule id="brands">
+  <rule id="spots">
     <one-of>
       <item>mcdonalds<tag>out.local="MCDONALD'S"</tag></item>
       <item>continente<tag>out.local="CONTINENTE"</tag></item>
@@ -65,6 +71,26 @@
       <item>altice<tag>out.local="ALTICE"</tag></item>
       <item>ria<tag>out.local="RIA"</tag></item>
       <item>universidade de aveiro<tag>out.local="UA"</tag></item>
+      <item>pingo doce<tag>out.local="PINGO DOCE"</tag></item>
+    </one-of>
+  </rule>
+  <!-- Rule for get location-->
+  <rule id="location">
+    <one-of>
+      <item>
+        Aveiro<tag>out.location="AVEIRO"</tag>
+      </item>
+      
+      <item>
+        Coimbra<tag>out.location="COIMBRA"</tag>
+      </item>
+      <item>
+        Lisboa<tag>out.location="LISBOA"</tag>
+      </item>
+      <item>
+        Porto<tag>out.location="PORTO"</tag>
+      </item>
+      
     </one-of>
   </rule>
 
@@ -148,11 +174,12 @@
       <item repeat="0-1">algumas</item>
     </one-of>
     <one-of>
-      <item>telemóvel<tag>out.action="INFO"</tag></item>
-      <item>telefone<tag>out.action="INFO"</tag></item>
-      <item>contacto<tag>out.action="INFO"</tag></item>
-      <item>informação<tag>out.action="INFO"</tag></item>
-      <item>informações<tag>out.action="INFO"</tag></item>
+      <item>telemóvel<tag>out.info="PHONE NUMBER"</tag></item>
+      <item>telefone<tag>out.info="PHONE NUMBER"</tag></item>
+      <item>contacto<tag>out.info="PHONE NUMBER"</tag></item>
+      <item>informação<tag>out.info="INFORMÇÃO"</tag></item>
+      <item>informações<tag>out.info="INFORMAÇÃO"</tag></item>
+      <item>classificação<tag>out.info="RATING"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">de</item>

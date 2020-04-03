@@ -81,12 +81,42 @@ namespace speechModality {
                             // Processamento do comando
                             switch ((string)tojson.action.ToString()) {
                                 case "SEARCH":
-                                    if ((string)tojson.service != null) {
-                                         // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
-                                        t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode));
-                                    } else if ((string)tojson.local != null ) {
-                                        // McDonalds, Continente, Forum, Glicinias, Altice, Ria
-                                        t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode));
+                                    if ((string)tojson.info == null)
+                                    {
+                                        if ((string)tojson.service != null)
+                                        {
+
+                                            // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                            t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
+                                        }
+                                        else if ((string)tojson.local != null)
+                                        {
+                                            // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                            if ((string)tojson.location != null)
+                                            {
+                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
+                                            }
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if ((string)tojson.service != null)
+                                        {
+
+                                            // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                            t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info.ToString()));
+                                        }
+                                        else if ((string)tojson.local != null)
+                                        {
+                                            // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                            if ((string)tojson.location != null)
+                                            {
+                                                t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info.ToString()));
+                                            }
+
+                                        }
+                                       
                                     }
                                     break;
                                 case "CHANGE":
@@ -102,7 +132,7 @@ namespace speechModality {
                                     else if (tojson.subaction == "ORIGEM") { t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
                                     } else { t.Speak("Cê é burro");  }
                                     break;
-
+                                /*
                                 case "INFO":
                                     if ((string)tojson.service != null) {
                                         // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
@@ -113,6 +143,7 @@ namespace speechModality {
                                         t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString()));
                                     }
                                     break;
+                                    */
                                 case "SHUTDOWN":
                                     System.Environment.Exit(1);
                                     break;

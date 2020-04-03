@@ -10,20 +10,21 @@ using System.IO;
 
 namespace speechModality {
     class GoogleMapsAPI {
-        public String Nearby(String tojson, String service, String local, String mode) {
+        public String Nearby(String tojson, String service, String local, String mode, String location) {
 
             string speach = "";
             string URL = "";
             string identifier = "";
+            
             if (local == null) {
                 Random rand = new Random();
                 int id = rand.Next(1, 100);
-                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro+" + id + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service);
+                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+{1}+" + id + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service,location);
             }
             else {
-                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local);
+                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+{1}" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local,location);
             }
-
+            
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
             try {
                 string distancia = "";
@@ -61,6 +62,7 @@ namespace speechModality {
                 }
                 throw;
             }
+            Console.WriteLine(speach);
             return speach;
         }
 
@@ -75,7 +77,7 @@ namespace speechModality {
             return output;
         }
 
-        public String GetInfo(String tojson, String service, String local)  {
+        public String GetInfo(String tojson, String service, String local, String infotype)  {
 
             string speach = "";
             string URL = "";
