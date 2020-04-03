@@ -6,17 +6,12 @@
       <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
-      
       <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
-      <item repeat="0-1">
-        <ruleref uri="#info"/>
-        <tag>out.info=rules.latest();</tag>
-      </item>
+      <item repeat="0-1"><ruleref uri="#info"/><tag>out.info=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#spots"/><tag>out.spots=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#location"/><tag>out.location=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>
-      
+      <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>   
 	  </item>
 	</rule>
   
@@ -74,23 +69,16 @@
       <item>pingo doce<tag>out.local="PINGO DOCE"</tag></item>
     </one-of>
   </rule>
+  
   <!-- Rule for get location-->
   <rule id="location">
     <one-of>
-      <item>
-        Aveiro<tag>out.location="AVEIRO"</tag>
-      </item>
-      
-      <item>
-        Coimbra<tag>out.location="COIMBRA"</tag>
-      </item>
-      <item>
-        Lisboa<tag>out.location="LISBOA"</tag>
-      </item>
-      <item>
-        Porto<tag>out.location="PORTO"</tag>
-      </item>
-      
+      <item>Aveiro<tag>out.location="AVEIRO"</tag></item>
+      <item>Coimbra<tag>out.location="COIMBRA"</tag></item>
+      <item>Lisboa<tag>out.location="LISBOA"</tag></item>
+      <item>Porto<tag>out.location="PORTO"</tag></item>
+      <item>Cantanhede<tag>out.location="CANTANHEDE"</tag></item>
+      <item>Oliveira de Azemeis<tag>out.location="OLIVEIRA DE AZEMEIS"</tag></item>
     </one-of>
   </rule>
 
@@ -177,7 +165,7 @@
       <item>telemóvel<tag>out.info="PHONE NUMBER"</tag></item>
       <item>telefone<tag>out.info="PHONE NUMBER"</tag></item>
       <item>contacto<tag>out.info="PHONE NUMBER"</tag></item>
-      <item>informação<tag>out.info="INFORMÇÃO"</tag></item>
+      <item>informação<tag>out.info="INFORMAÇÃO"</tag></item>
       <item>informações<tag>out.info="INFORMAÇÃO"</tag></item>
       <item>classificação<tag>out.info="RATING"</tag></item>
     </one-of>
