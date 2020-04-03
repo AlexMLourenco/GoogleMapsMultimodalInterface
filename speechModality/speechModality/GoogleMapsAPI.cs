@@ -10,6 +10,7 @@ using System.IO;
 
 namespace speechModality {
     class GoogleMapsAPI {
+
         public String Nearby(String tojson, String service, String local, String mode, String location) {
 
             string speach = "";
@@ -45,7 +46,7 @@ namespace speechModality {
                     StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
                     dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
                     
-                    // Getting real name of the id
+                    // Getting real name of the associated id
                     identifier = (string)tojson2.geocoded_waypoints[1].place_id.ToString();
                     URL = string.Format("https://maps.googleapis.com/maps/api/place/details/json?place_id={0}&fields=name,formatted_phone_number&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", identifier);
                     HttpWebRequest request2 = (HttpWebRequest)WebRequest.Create(URL);
@@ -58,8 +59,6 @@ namespace speechModality {
                     }
 
                     distancia = CheckDistance((string)tojson2.routes[0].legs[0].distance.value.ToString());
-
-
                     if (local == null) { speach = (string.Format("O {0} fica a {1} da sua localização", name, distancia)); }
                     else { speach = (string.Format("O {0} fica a {1} da sua localização", name, distancia)); }
                 }
@@ -83,11 +82,7 @@ namespace speechModality {
             if (distance > 1000) {
                 distance = (double)distance / (double)1000;
                 output = (string.Format("{0} quilómetros", distance.ToString("0.##")));
-            } else {
-                output = (string.Format("{0} metros", input));
-            }
-
-            Console.WriteLine(output);
+            } else output = (string.Format("{0} metros", input));
 
             return output;
         }
@@ -158,6 +153,38 @@ namespace speechModality {
                 throw;
             }
             return speach;
+        }
+
+        public Double[] GetCoordinates(String spot) {
+            double lat = 0.0000000, lng = 0.0000000;
+            double[] coords = { lat, lng };
+            string URL = string.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", spot);
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+            try {
+                WebResponse response = request.GetResponse();
+                using (Stream responseStream = response.GetResponseStream()) {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
+                    dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
+
+                    // Getting latitude and longitude
+                    lat = (double)tojson2.results[0].geometry.location.lat;
+                    lng = (double)tojson2.results[0].geometry.location.lng;
+
+                    Console.WriteLine(lat);
+                    Console.WriteLine(lng);
+
+                }
+            } catch (WebException ex) {
+                WebResponse errorResponse = ex.Response;
+                using (Stream responseStream = errorResponse.GetResponseStream()) {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
+                    String errorText = reader.ReadToEnd();
+                    Console.WriteLine("Algo de errado aconteceu");
+                }
+                throw;
+            }
+            return coords;
         }
     }
 }

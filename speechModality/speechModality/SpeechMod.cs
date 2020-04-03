@@ -85,8 +85,7 @@ namespace speechModality {
                                             // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
                                             if ((string)tojson.location != null)
                                                 t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
-                                            else
-                                                t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
+                                            else t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
                                         }
                                         else if ((string)tojson.local != null) {
                                             // McDonalds, Continente, Forum, Glicinias, Altice, Ria
