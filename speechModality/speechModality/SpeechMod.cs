@@ -99,12 +99,23 @@ namespace speechModality {
                                             t.Speak("falta");
                                         }
                                     }
-                                    else if (tojson.subaction == "ORIGEM") {
-                                        t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
-                                    } else {
-                                        t.Speak("Cê é burro");
+                                    else if (tojson.subaction == "ORIGEM") { t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
+                                    } else { t.Speak("Cê é burro");  }
+                                    break;
+
+                                case "INFO":
+                                    if ((string)tojson.service != null) {
+                                        // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                        t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null));
                                     }
-                                        break;
+                                    else if ((string)tojson.local != null) {
+                                        // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                        t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString()));
+                                    }
+                                    break;
+                                case "SHUTDOWN":
+                                    System.Environment.Exit(1);
+                                    break;
                             }
                         } else {  t.Speak("Olá"); }
                     });
