@@ -57,10 +57,11 @@ namespace speechModality {
                         name = (string)tojson3.result.name.ToString();
                     }
 
-                    distancia = (string)tojson2.routes[0].legs[0].distance.value.ToString();
+                    distancia = CheckDistance((string)tojson2.routes[0].legs[0].distance.value.ToString());
 
-                    if (local == null) { speach = (string.Format("O {0} fica a {1} metros da sua localização", name, distancia)); }
-                    else { speach = (string.Format("O {0} fica a {1} metros da sua localização", name, distancia)); }
+
+                    if (local == null) { speach = (string.Format("O {0} fica a {1} da sua localização", name, distancia)); }
+                    else { speach = (string.Format("O {0} fica a {1} da sua localização", name, distancia)); }
                 }
             }
             catch (WebException ex) {
@@ -73,6 +74,22 @@ namespace speechModality {
                 throw;
             }
             return speach;
+        }
+
+        private String CheckDistance(String input) {
+            String output = "";
+            double distance = Int32.Parse(input);
+
+            if (distance > 1000) {
+                distance = (double)distance / (double)1000;
+                output = (string.Format("{0} quilómetros", distance.ToString("0.##")));
+            } else {
+                output = (string.Format("{0} metros", input));
+            }
+
+            Console.WriteLine(output);
+
+            return output;
         }
 
         public String Translate(String input) {

@@ -58,7 +58,7 @@ namespace speechModality {
 
             if (e.Result.Confidence < 0.5) {
                 t.Speak("Desculpe não percebi. Repita por favor.");
-                System.Threading.Thread.Sleep(2000);
+                //System.Threading.Thread.Sleep(2000);
             } else {
                 string json = "{\n";
                 foreach (var resultSemantic in e.Result.Semantics) { 
