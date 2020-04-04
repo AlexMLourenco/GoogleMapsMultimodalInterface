@@ -140,3 +140,4 @@ C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\speechModality\
 C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\speechModality\speechModality\obj\Debug\speechModality.csproj.GenerateResource.cache
 C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\speechModality\speechModality\obj\Debug\speechModality.csproj.CoreCompileInputs.cache
 C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\speechModality\speechModality\obj\Debug\speechModality.csproj.CopyComplete
+C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\speechModality\speechModality\obj\Debug\speechModality.csproj.CoreCompileInputs.cache

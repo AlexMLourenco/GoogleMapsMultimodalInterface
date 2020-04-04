@@ -11,6 +11,7 @@
       <item repeat="0-1"><ruleref uri="#info"/><tag>out.info=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#spots"/><tag>out.spots=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#nearby"/><tag>out.nearby=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#location"/><tag>out.location=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>   
 	  </item>
@@ -65,10 +66,6 @@
       <item repeat="0-1">um</item>
       <item repeat="0-1">uma</item>
       <item repeat="0-1">outro</item>
-      <item repeat="0-1">nas proximidades</item>
-      <item repeat="0-1">nas redondezas</item>
-      <item repeat="0-1">por perto</item>
-      <item repeat="0-1">aqui perto</item>
     </one-of>
   </rule>
 
@@ -199,6 +196,18 @@
       <item>fechar programa<tag>out.action="SHUTDOWN"</tag></item>
       <item>xau<tag>out.action="SHUTDOWN"</tag></item>
       <item>adeus<tag>out.action="SHUTDOWN"</tag></item>
+    </one-of>
+  </rule>
+  <rule id="nearby">
+    <one-of>
+      <item>perto<tag>out.nearby="SHUTDOWN"</tag></item>
+      <item>próximo<tag>out.nearby="SHUTDOWN"</tag></item>
+      <item>redondezas<tag>out.nearby="SHUTDOWN"</tag></item>
+      <item>aqui<tag>out.nearby="SHUTDOWN"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">por</item>
+      <item repeat="0-1">nas</item>
     </one-of>
   </rule>
   

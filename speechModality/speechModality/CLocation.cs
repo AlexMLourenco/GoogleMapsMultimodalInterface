@@ -9,7 +9,7 @@ namespace speechModality {
 
     class CLocation {
         GeoCoordinateWatcher watcher;
-
+        private double[] coordinates;
         public void GetLocationEvent() {
             this.watcher = new GeoCoordinateWatcher();
             this.watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
@@ -24,7 +24,14 @@ namespace speechModality {
         }
 
         void PrintPosition(double Latitude, double Longitude) {
+            double[] coord = {Latitude, Longitude};
+            this.coordinates = coord;
             Console.WriteLine("Latitude: {0}, Longitude {1}", Latitude, Longitude);
+        }
+        public double[] getCoords()
+        {
+            return this.coordinates;
+
         }
     }
 }

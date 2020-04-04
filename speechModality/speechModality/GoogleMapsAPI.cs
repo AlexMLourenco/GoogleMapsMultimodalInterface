@@ -186,5 +186,67 @@ namespace speechModality {
             }
             return coords;
         }
+
+        //get closest spot 
+        public String GetClosestPlace(String tojson, String service, String local)
+        {
+
+            string speach = "";
+            string URL = "";
+            if (local == null)
+            {
+                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40,64371,-8,65149&radius=50&type={0}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service);
+            }
+            else
+            {
+                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40,64371,-8,65149&radius=50&name={0}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local);
+            }
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+            try
+            {
+                string id = "";
+                string name = "";
+                string phone = "";
+                double rating = 0.0;
+
+                WebResponse response = request.GetResponse();
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
+                    dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
+
+                    // Getting real name of the id
+                    id = (string)tojson2.geocoded_waypoints[1].place_id.ToString();
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/details/json?place_id={0}&fields=name,rating,formatted_phone_number&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", id);
+                    HttpWebRequest request2 = (HttpWebRequest)WebRequest.Create(URL);
+
+                    WebResponse response2 = request2.GetResponse();
+                    using (Stream responseStream2 = response2.GetResponseStream())
+                    {
+                        StreamReader reader2 = new StreamReader(responseStream2, System.Text.Encoding.UTF8);
+                        dynamic tojson3 = JsonConvert.DeserializeObject(reader2.ReadToEnd());
+                        name = (string)tojson3.result.name.ToString();
+                        phone = (string)tojson3.result.formatted_phone_number.ToString();
+                        rating = (double)tojson3.result.rating;
+                    }
+
+                        speach = (string.Format("O contacto telefónico do {0} é {1} e tem um rating de {2}", name, phone, rating));
+                    
+                }
+            }
+            catch (WebException ex)
+            {
+                WebResponse errorResponse = ex.Response;
+                using (Stream responseStream = errorResponse.GetResponseStream())
+                {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
+                    String errorText = reader.ReadToEnd();
+                    speach = ("Algo de errado aconteceu");
+                }
+                throw;
+            }
+            return speach;
+        }
     }
 }

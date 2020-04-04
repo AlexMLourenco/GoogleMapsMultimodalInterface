@@ -55,7 +55,7 @@ namespace speechModality {
 
         private void Sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e) {
             onRecognized(new SpeechEventArg(){Text = e.Result.Text, Confidence = e.Result.Confidence, Final = true});
-
+            
             if (e.Result.Confidence < 0.5) {
                 t.Speak("Desculpe não percebi. Repita por favor.");
                 //System.Threading.Thread.Sleep(2000);
@@ -77,6 +77,8 @@ namespace speechModality {
                     wake = true;
                     // Get my atual location in the beggining
                     myLocation.GetLocationEvent();
+                    
+                    
                 }
 
                 if (wake) {
