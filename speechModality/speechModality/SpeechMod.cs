@@ -26,6 +26,7 @@ namespace speechModality {
 
         private String mode = "driving";
         private GoogleMapsAPI api = new GoogleMapsAPI();
+        CLocation myLocation = new CLocation();
         private bool wake = false;
 
         public SpeechMod() {
@@ -72,7 +73,11 @@ namespace speechModality {
                 dynamic tojson = JsonConvert.DeserializeObject(json);
                 Console.WriteLine(tojson);
 
-                if (tojson.wake != null) wake = true;
+                if (tojson.wake != null) {
+                    wake = true;
+                    // Get my atual location in the beggining
+                    myLocation.GetLocationEvent();
+                }
 
                 if (wake) {
                     if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) {
