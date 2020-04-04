@@ -17,9 +17,7 @@ namespace speechModality {
         public event EventHandler<SpeechEventArg> Recognized;
         protected virtual void onRecognized(SpeechEventArg msg) {
             EventHandler<SpeechEventArg> handler = Recognized;
-            if (handler != null) {
-                handler(this, msg);
-            }
+            if (handler != null) { handler(this, msg); }
         }
 
         private LifeCycleEvents lce;
@@ -28,6 +26,7 @@ namespace speechModality {
 
         private String mode = "driving";
         private GoogleMapsAPI api = new GoogleMapsAPI();
+        private bool wake = false;
 
         public SpeechMod() {
             //init LifeCycleEvents..
@@ -73,62 +72,67 @@ namespace speechModality {
                 dynamic tojson = JsonConvert.DeserializeObject(json);
                 Console.WriteLine(tojson);
 
-                if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) { t.Speak("Utilize só um comando de cada vez.");
-                } else {
-                    App.Current.Dispatcher.Invoke(() => {
-                        if (tojson.action != null) {
-                            switch ((string)tojson.action.ToString()) {
+                if (tojson.wake != null) wake = true;
 
-                                case "SEARCH":
-                                    if ((string)tojson.info == null) {
-                                        if ((string)tojson.service != null) {
-                                            // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
-                                            if ((string)tojson.location != null)
-                                                t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
-                                            else t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
-                                        }
-                                        else if ((string)tojson.local != null) {
-                                            // McDonalds, Continente, Forum, Glicinias, Altice, Ria
-                                            if ((string)tojson.location != null)
-                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
-                                            else
-                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
-                                        }
-                                    } else {
-                                        if ((string)tojson.service != null) {
-                                            t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info.ToString()));
-                                        } else if ((string)tojson.local != null) {
-                                            if ((string)tojson.location != null) 
-                                                t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info.ToString()));
-                                            else
-                                                t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
-                                        } 
-                                    }
-                                    break;
+                if (wake) {
+                    if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) {
+                        t.Speak("Utilize só um comando de cada vez.");
+                    } else {
+                        App.Current.Dispatcher.Invoke(() => {
+                            if (tojson.action != null) {
+                                switch ((string)tojson.action.ToString()) {
 
-                                case "CHANGE":
-                                    if (tojson.subaction == "TRANSPORTE") {
-                                        if ((string)tojson.transport != null) {
-                                            // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
-                                            mode = api.Translate((string)tojson.transport.ToString());
-                                            t.Speak(string.Format("Modo de transporte alterado para {0}", (string)tojson.transport.ToString()));
+                                    case "SEARCH":
+                                        if ((string)tojson.info == null) {
+                                            if ((string)tojson.service != null) {
+                                                // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                                if ((string)tojson.location != null)
+                                                    t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
+                                                else t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
+                                            } else if ((string)tojson.local != null) {
+                                                // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                                if ((string)tojson.location != null)
+                                                    t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
+                                                else
+                                                    t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
+                                            }
                                         } else {
-                                            t.Speak("falta");
+                                            if ((string)tojson.service != null) {
+                                                t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info.ToString()));
+                                            } else if ((string)tojson.local != null) {
+                                                if ((string)tojson.location != null)
+                                                    t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info.ToString()));
+                                                else
+                                                    t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
+                                            }
                                         }
-                                    }
-                                    else if (tojson.subaction == "ORIGEM") { t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
-                                    } else { t.Speak("Cê é burro");  }
-                                    break;
+                                        break;
 
-                                case "SHUTDOWN":
-                                    System.Environment.Exit(1);
-                                    break;
-                            }
-                        } else {  t.Speak("Olá"); }
-                    });
-                    var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
-                    mmic.Send(exNot);
-                }   
+                                    case "CHANGE":
+                                        if (tojson.subaction == "TRANSPORTE") {
+                                            if ((string)tojson.transport != null) {
+                                                // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
+                                                mode = api.Translate((string)tojson.transport.ToString());
+                                                t.Speak(string.Format("Modo de transporte alterado para {0}", (string)tojson.transport.ToString()));
+                                            }
+                                            else t.Speak("Peço desculpa, não entendi o meio de transporte.");
+
+                                        } else if (tojson.subaction == "ORIGEM") {
+                                            t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
+                                        }
+                                        else t.Speak("Peço desculpa, não entendi a origem de partida pretendida.");
+                                        break;
+
+                                    case "SHUTDOWN":
+                                        System.Environment.Exit(1);
+                                        break;
+                                }
+                            } else { t.Speak("Olá! Como posso ajudar?"); }
+                        });
+                        var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
+                        mmic.Send(exNot);
+                    }
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 <grammar xml:lang="pt-PT" version="1.0" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
 	<rule id="rootRule" scope="public">
 	  <item>
+      <item repeat="0-1"><ruleref uri="#wake"/><tag>out.wake=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#change"/><tag>out.change=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
@@ -14,7 +15,18 @@
       <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>   
 	  </item>
 	</rule>
-  
+
+  <!-- Rules for waking up -->
+  <rule id="wake">
+    <one-of>
+      <item>olá<tag>out.wake="WAKE"</tag></item>
+      <item>bom dia<tag>out.wake="WAKE"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">google maps</item>
+    </one-of>
+  </rule>
+
   <!-- Rules for the search -->
   <rule id="search">
     <one-of>
