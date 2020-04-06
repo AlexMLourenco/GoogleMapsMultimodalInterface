@@ -8,6 +8,7 @@
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#directions"/><tag>out.directions=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#info"/><tag>out.info=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#spots"/><tag>out.spots=rules.latest();</tag></item>
@@ -46,21 +47,38 @@
       <item repeat="0-1">aqui perto</item>
     </one-of>
   </rule>
+  <rule id="directions">
+    <one-of>
+      <item>percurso<tag>out.action="DIRECTIONS"</tag></item>
+      <item>trajeto<tag>out.action="DIRECTIONS"</tag></item>
+      <item>direcções<tag>out.action="DIRECTIONS"</tag></item>
+      <item>caminho<tag>out.action="DIRECTIONS"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">para</item>
+      <item repeat="0-1">mostra</item>
+      <item repeat="0-1">mostra</item>
+      <item repeat="0-1">apresenta</item>
+      <item repeat="0-1">me</item>
+      
+    </one-of>
+  </rule>
 
   <!-- Rules for diferent services -->
   <rule id="consume">
     <one-of>
-      <item>restaurante<tag>out.service="RESTAURANTE"</tag></item>
-      <item>bar<tag>out.service="BAR"</tag></item>
-      <item>café<tag>out.service="CAFÉ"</tag></item>
-      <item>pastelaria<tag>out.service="PADARIA"</tag></item>
-      <item>hotel<tag>out.service="HOTEL"</tag></item>
-      <item>hospital<tag>out.service="HOSTITAL"</tag> </item>
-      <item>policia<tag>out.service="PSP"</tag></item>
-      <item>caixa geral<tag>out.service="CGD"</tag></item>
-      <item>banco<tag>out.service="BANCO"</tag></item>
-      <item>bancos<tag>out.service="BANCO"</tag></item>
-      <item>multibanco<tag>out.service="ATM"</tag></item>
+      <item>restaurante<tag>out.service="restaurant"</tag></item>
+      <item>bar<tag>out.service="bar"</tag></item>
+      <item>café<tag>out.service="cafe"</tag></item>
+      <item>pastelaria<tag>out.service="bakery"</tag></item>
+      <item>hotel<tag>out.service="hotel"</tag></item>
+      <item>hospital<tag>out.service="hospital"</tag> </item>
+      <item>policia<tag>out.service="police"</tag></item>
+      <item>caixa geral<tag>out.service="cgd"</tag></item>
+      <item>banco<tag>out.service="bank"</tag></item>
+      <item>bancos<tag>out.service="bank"</tag></item>
+      <item>multibanco<tag>out.service="atm"</tag></item>
+      <item>universidade<tag>out.service="atm"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">um</item>
@@ -72,26 +90,26 @@
   <!-- Rule for a specific local-->
   <rule id="spots">
     <one-of>
-      <item>mcdonalds<tag>out.local="MCDONALD'S"</tag></item>
-      <item>continente<tag>out.local="CONTINENTE"</tag></item>
-      <item>forum<tag>out.local="FORUM"</tag></item>
-      <item>glicinias<tag>out.local="GLICINIAS"</tag></item>
-      <item>altice<tag>out.local="ALTICE"</tag></item>
-      <item>ria<tag>out.local="RIA"</tag></item>
-      <item>universidade de aveiro<tag>out.local="UA"</tag></item>
-      <item>pingo doce<tag>out.local="PINGO DOCE"</tag></item>
+      <item>mcdonalds<tag>out.local="mcdonald's"</tag></item>
+      <item>continente<tag>out.local="continente"</tag></item>
+      <item>forum<tag>out.local="forum"</tag></item>
+      <item>glicinias<tag>out.local="glicinias"</tag></item>
+      <item>altice<tag>out.local="altice"</tag></item>
+      <item>ria<tag>out.local="ria"</tag></item>
+      <item>universidade de aveiro<tag>out.local="universidade de aveiro"</tag></item>
+      <item>pingo doce<tag>out.local="pingo doce"</tag></item>
     </one-of>
   </rule>
   
   <!-- Rule for get location-->
   <rule id="location">
     <one-of>
-      <item>Aveiro<tag>out.location="AVEIRO"</tag></item>
-      <item>Coimbra<tag>out.location="COIMBRA"</tag></item>
-      <item>Lisboa<tag>out.location="LISBOA"</tag></item>
-      <item>Porto<tag>out.location="PORTO"</tag></item>
-      <item>Cantanhede<tag>out.location="CANTANHEDE"</tag></item>
-      <item>Oliveira de Azemeis<tag>out.location="OLIVEIRA DE AZEMEIS"</tag></item>
+      <item>Aveiro<tag>out.location="aveiro"</tag></item>
+      <item>Coimbra<tag>out.location="coimbra"</tag></item>
+      <item>Lisboa<tag>out.location="lisboa"</tag></item>
+      <item>Porto<tag>out.location="porto"</tag></item>
+      <item>Cantanhede<tag>out.location="cantanhede"</tag></item>
+      <item>Oliveira de Azemeis<tag>out.location="oliveira de azemeis"</tag></item>
     </one-of>
   </rule>
 
@@ -128,7 +146,6 @@
       <item repeat="0-1">da</item>
       <item repeat="0-1">viagem</item>
       <item repeat="0-1">do</item>
-      <item repeat="0-1">percurso</item>
     </one-of>
   </rule>
 
@@ -151,13 +168,13 @@
   <!-- Rules for changing transports -->
   <rule id="transport">
     <one-of>
-      <item>carro<tag>out.transport="CARRO"</tag></item>
-      <item>a pé<tag>out.transport="A PÉ"</tag></item>
-      <item>caminhar<tag>out.transport="A PÉ"</tag></item>
-      <item>bicicleta<tag>out.transport="BICICLETA"</tag></item>
-      <item>metro<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
-      <item>autocarro<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
-      <item>transportes públicos<tag>out.transport="TRANSPORTES PÚBLICOS"</tag></item>
+      <item>carro<tag>out.transport="DRIVING"</tag></item>
+      <item>a pé<tag>out.transport="WALKING"</tag></item>
+      <item>caminhar<tag>out.transport="WALKING"</tag></item>
+      <item>bicicleta<tag>out.transport="BICYCLING"</tag></item>
+      <item>metro<tag>out.transport="TRANSIT"</tag></item>
+      <item>autocarro<tag>out.transport="TRANSIT"</tag></item>
+      <item>transportes públicos<tag>out.transport="TRANSIT"</tag></item>
     </one-of>
   </rule>
 
@@ -200,14 +217,15 @@
   </rule>
   <rule id="nearby">
     <one-of>
-      <item>perto<tag>out.nearby="SHUTDOWN"</tag></item>
-      <item>próximo<tag>out.nearby="SHUTDOWN"</tag></item>
-      <item>redondezas<tag>out.nearby="SHUTDOWN"</tag></item>
-      <item>aqui<tag>out.nearby="SHUTDOWN"</tag></item>
+      <item>perto<tag>out.nearby="NEARBY"</tag></item>
+      <item>próximo<tag>out.nearby="NEARBY"</tag></item>
+      <item>redondezas<tag>out.nearby="NEARBY"</tag></item>
+      <item>aqui<tag>out.nearby="NEARBY"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">por</item>
       <item repeat="0-1">nas</item>
+      <item repeat="0-1">mais</item>
     </one-of>
   </rule>
   

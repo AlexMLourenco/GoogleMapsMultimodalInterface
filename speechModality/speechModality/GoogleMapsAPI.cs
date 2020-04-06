@@ -10,7 +10,7 @@ using System.IO;
 
 namespace speechModality {
     class GoogleMapsAPI {
-
+        CLocation myLocation = new CLocation();
         public String Nearby(String tojson, String service, String local, String mode, String location) {
 
             string speach = "";
@@ -90,10 +90,10 @@ namespace speechModality {
         public String Translate(String input) {
             String output = "";
 
-            if (input == "CARRO") output = "driving";
-            else if (input == "A PÉ") output = "walking";
-            else if (input == "BICICLETA") output = "bicycling";
-            else if (input == "TRANSPORTES PÚBLICOS") output = "transit";
+            if (input == "DRIVING") output = "carro";
+            else if (input == "WALKING") output = "a caminhar";
+            else if (input == "BICYCLING") output = "bicicleta";
+            else if (input == "TRANSIT") output = "transportes plúblicos";
 
             return output;
         }
@@ -192,61 +192,62 @@ namespace speechModality {
         {
 
             string speach = "";
+            int radius = 50;
+            Boolean found = false;
             string URL = "";
+            string[] coords = myLocation.getCoords();
             if (local == null)
             {
-                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40,64371,-8,65149&radius=50&type={0}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service);
+                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU",coords[0],coords[1], service);
             }
             else
             {
-                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40,64371,-8,65149&radius=50&name={0}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local);
+                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local) ;
             }
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            try
-            {
-                string id = "";
-                string name = "";
-                string phone = "";
-                double rating = 0.0;
-
-                WebResponse response = request.GetResponse();
-                using (Stream responseStream = response.GetResponseStream())
+            while (!found) {
+                string URL2 = URL + string.Format("&radius={0}", radius);
+                Console.WriteLine(URL2);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL2);
+                try
                 {
-                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
-                    dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
-
-                    // Getting real name of the id
-                    id = (string)tojson2.geocoded_waypoints[1].place_id.ToString();
-                    URL = string.Format("https://maps.googleapis.com/maps/api/place/details/json?place_id={0}&fields=name,rating,formatted_phone_number&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", id);
-                    HttpWebRequest request2 = (HttpWebRequest)WebRequest.Create(URL);
-
-                    WebResponse response2 = request2.GetResponse();
-                    using (Stream responseStream2 = response2.GetResponseStream())
+     
+                    WebResponse response = request.GetResponse();
+                    using (Stream responseStream = response.GetResponseStream())
                     {
-                        StreamReader reader2 = new StreamReader(responseStream2, System.Text.Encoding.UTF8);
-                        dynamic tojson3 = JsonConvert.DeserializeObject(reader2.ReadToEnd());
-                        name = (string)tojson3.result.name.ToString();
-                        phone = (string)tojson3.result.formatted_phone_number.ToString();
-                        rating = (double)tojson3.result.rating;
+                        StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
+                        dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
+                        if((string)tojson2.status.ToString() == "OK")
+                        {
+                            speach = (string.Format("O local mais próximo é o {0}", (string)tojson2.results[0].name.ToString()));
+                            found = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("aumentei" + radius);
+                            radius += 50;
+                        }
+ 
                     }
-
-                        speach = (string.Format("O contacto telefónico do {0} é {1} e tem um rating de {2}", name, phone, rating));
-                    
                 }
-            }
-            catch (WebException ex)
-            {
-                WebResponse errorResponse = ex.Response;
-                using (Stream responseStream = errorResponse.GetResponseStream())
+                catch (WebException ex)
                 {
-                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
-                    String errorText = reader.ReadToEnd();
-                    speach = ("Algo de errado aconteceu");
+                    WebResponse errorResponse = ex.Response;
+                    using (Stream responseStream = errorResponse.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
+                        String errorText = reader.ReadToEnd();
+                        speach = ("Algo de errado aconteceu");
+                    }
+                    throw;
                 }
-                throw;
+                
+               
             }
             return speach;
+        }
+        public void setLocation()
+        {
+            myLocation.GetLocationEvent();
         }
     }
 }

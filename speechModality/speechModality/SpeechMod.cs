@@ -26,7 +26,6 @@ namespace speechModality {
 
         private String mode = "driving";
         private GoogleMapsAPI api = new GoogleMapsAPI();
-        CLocation myLocation = new CLocation();
         private bool wake = false;
 
         public SpeechMod() {
@@ -76,7 +75,7 @@ namespace speechModality {
                 if (tojson.wake != null) {
                     wake = true;
                     // Get my atual location in the beggining
-                    myLocation.GetLocationEvent();
+                    api.setLocation();
                     
                     
                 }
@@ -87,30 +86,40 @@ namespace speechModality {
                     } else {
                         //App.Current.Dispatcher.Invoke(() => {
                             if (tojson.action != null) {
-                                switch ((string)tojson.action.ToString()) {
+                            switch ((string)tojson.action.ToString()) {
 
                                     case "SEARCH":
-                                        if ((string)tojson.info == null) {
-                                            if ((string)tojson.service != null) {
-                                                // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
-                                                if ((string)tojson.location != null)
-                                                    t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
-                                                else t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
-                                            } else if ((string)tojson.local != null) {
-                                                // McDonalds, Continente, Forum, Glicinias, Altice, Ria
-                                                if ((string)tojson.location != null)
-                                                    t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
-                                                else
-                                                    t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
+                                        if ((string)tojson.nearby == null) { 
+                                            if ((string)tojson.info == null) {
+                                                if ((string)tojson.service != null) {
+                                                    // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                                    if ((string)tojson.location != null)
+                                                        t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
+                                                    else t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
+                                                } else if ((string)tojson.local != null) {
+                                                    // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                                    if ((string)tojson.location != null)
+                                                        t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
+                                                    else
+                                                        t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
+                                                }
+                                            } else {
+                                                if ((string)tojson.service != null) {
+                                                    t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info.ToString()));
+                                                } else if ((string)tojson.local != null) {
+                                                    if ((string)tojson.location != null)
+                                                        t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info.ToString()));
+                                                    else
+                                                        t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
+                                                }
                                             }
-                                        } else {
-                                            if ((string)tojson.service != null) {
-                                                t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info.ToString()));
-                                            } else if ((string)tojson.local != null) {
-                                                if ((string)tojson.location != null)
-                                                    t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info.ToString()));
-                                                else
-                                                    t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
+                                        }
+                                        else {
+                                            if ((string)tojson.local != null){
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), null, (string)tojson.local.ToString()));
+                                            }
+                                            else if((string)tojson.service != null){
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), null));
                                             }
                                         }
                                         break;
@@ -119,8 +128,8 @@ namespace speechModality {
                                         if (tojson.subaction == "TRANSPORTE") {
                                             if ((string)tojson.transport != null) {
                                                 // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
-                                                mode = api.Translate((string)tojson.transport.ToString());
-                                                t.Speak(string.Format("Modo de transporte alterado para {0}", (string)tojson.transport.ToString()));
+                                                mode = (string)tojson.transport.ToString();
+                                                t.Speak(string.Format("Modo de transporte alterado para {0}", api.Translate(mode)));
                                             }
                                             else t.Speak("Peço desculpa, não entendi o meio de transporte.");
 
@@ -129,8 +138,26 @@ namespace speechModality {
                                         }
                                         else t.Speak("Peço desculpa, não entendi a origem de partida pretendida.");
                                         break;
+                                    case "DIRECTIONS":
+                                        if ((string)tojson.service != null)
+                                        {
+                                            // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                            if ((string)tojson.location != null)
+                                                t.Speak("foi pedido direcções para" + (string)tojson.service.ToString() + " em " +(string)tojson.location.ToString());
+                                            else
+                                                t.Speak("foi pedido direcções para" + (string)tojson.service.ToString());
+                                    }
+                                        else if ((string)tojson.local != null)
+                                        {
+                                            // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                            if ((string)tojson.location != null)
+                                                t.Speak("foi pedido direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
+                                            else
+                                                t.Speak("foi pedido direcções para" + (string)tojson.local.ToString());
+                                    }
+                                        break;
 
-                                    case "SHUTDOWN":
+                                case "SHUTDOWN":
                                         System.Environment.Exit(1);
                                         break;
                                 }
