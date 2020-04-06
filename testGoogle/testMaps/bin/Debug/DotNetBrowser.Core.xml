@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetBrowser.Core</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetBrowser.Chromium.ChromiumBinariesExtractor">
+            <summary>
+                A tool that is used to extract the corresponding Chromium binaries.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Chromium.ChromiumBinariesExtractor.DefaultChromiumDirectory">
+            <summary>
+                The default directory that will be used for binaries extraction
+                if a different location is not specified in the <see cref="P:DotNetBrowser.Engine.EngineOptions.ChromiumDirectory" />.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Chromium.ChromiumBinariesExtractor.#ctor(DotNetBrowser.Engine.BinariesExtractionOptions)">
+            <summary>
+                Creates and initializes an instance of <see cref="T:DotNetBrowser.Chromium.ChromiumBinariesExtractor" />.
+            </summary>
+            <param name="extractionOptions">the extraction options that are used to configure the binaries extractor.</param>
+        </member>
+        <member name="M:DotNetBrowser.Chromium.ChromiumBinariesExtractor.ExtractBinariesIfNecessary(DotNetBrowser.Engine.EngineOptions)">
+            <summary>
+                Locate and extract the Chromium binaries if the corresponding binaries were not extracted yet
+                or cannot be found at the location specified in <see cref="P:DotNetBrowser.Engine.EngineOptions.ChromiumDirectory" />.
+                <para>
+                    If the <see cref="P:DotNetBrowser.Engine.EngineOptions.ChromiumDirectory" /> is not specified, the
+                    <see cref="P:DotNetBrowser.Chromium.ChromiumBinariesExtractor.DefaultChromiumDirectory" /> value will be used for binaries extraction.
+                </para>
+            </summary>
+            <param name="options">the <see cref="T:DotNetBrowser.Engine.EngineOptions" /> instance to use.</param>
+        </member>
+        <member name="T:DotNetBrowser.Chromium.ChromiumInfo">
+            <summary>
+                Provides information about the Chromium engine used in DotNetBrowser.
+            </summary>
+        </member>
+        <member name="F:DotNetBrowser.Chromium.ChromiumInfo.Version">
+            <summary>
+                The current version of the underlying Chromium engine.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Dom.Events.KeyEventType">
+            <summary>
+                Represents the key event types.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Engine.EngineFactory">
+            <summary>
+                Factory class that is used to create <see cref="T:DotNetBrowser.Engine.IEngine"/> instances.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Engine.EngineFactory.Create(DotNetBrowser.Engine.EngineOptions)">
+            <summary>
+                Creates and returns an <see cref="T:DotNetBrowser.Engine.IEngine" /> instance.
+            </summary>
+            <param name="options">The <see cref="T:DotNetBrowser.Engine.EngineOptions" /> instance that will be used for initializing the engine</param>
+            <returns>A completely initialized Chromium engine.</returns>
+            <exception cref="T:DotNetBrowser.Engine.EngineInitializationException">The <see cref="T:DotNetBrowser.Engine.IEngine"/> initialization has failed for some reason.</exception>
+            <example>
+                <code source="../DotNetBrowser.Core.Test/EngineServiceTest.cs" region="EngineFactory.Create Sample" lang="C#"
+                    title="Create IEngine" />
+            </example>
+        </member>
+        <member name="M:DotNetBrowser.Engine.EngineFactory.Create">
+            <summary>
+                Creates and returns an <see cref="T:DotNetBrowser.Engine.IEngine" /> instance.
+            </summary>
+            <returns>A completely initialized Chromium engine.</returns>
+            <exception cref="T:DotNetBrowser.Engine.EngineInitializationException">The <see cref="T:DotNetBrowser.Engine.IEngine"/> initialization has failed for some reason.</exception>
+            <remarks>
+                Calling this method is equivalent to calling the <see cref="M:DotNetBrowser.Engine.EngineFactory.Create(DotNetBrowser.Engine.EngineOptions)" /> method
+                with the <see cref="T:DotNetBrowser.Engine.EngineOptions" /> built by calling <c>new EngineOptions.Builder().Build()</c>.
+            </remarks>
+        </member>
+        <member name="T:DotNetBrowser.Input.Mouse.MouseExtensions">
+            <summary>
+                The mouse input simulation service extension methods.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Input.Mouse.MouseExtensions.SimulateClick(DotNetBrowser.Input.Mouse.IMouse,DotNetBrowser.Input.Mouse.Events.MouseButton,DotNetBrowser.Geometry.Point)">
+            <summary>
+                Simulate mouse button click at the specified location.
+            </summary>
+            <param name="mouse">The mouse input simulation service.</param>
+            <param name="mouseButton">The mouse button that should be used for clicking.</param>
+            <param name="location">The mouse pointer location relative to the top left corner of the browser.</param>
+            <remarks>
+                The mouse click is simulated by raising <see cref="P:DotNetBrowser.Input.Mouse.IMouse.Moved" />, <see cref="P:DotNetBrowser.Input.Mouse.IMouse.Pressed" />, and
+                <see cref="P:DotNetBrowser.Input.Mouse.IMouse.Released" /> events in a sequence.
+            </remarks>
+        </member>
+        <member name="F:DotNetBrowser.Internals.Ipc.Chromium.ChromiumProcess.ProcessExitTimeout">
+            <summary>
+                The timeout (in milliseconds) thai is used to wait for process termination.
+                After that, the Chromium process will be forcibly killed.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Internals.Ipc.Streams.IAsyncStreamWriter`1">
+            <summary>
+            A writable stream of messages.
+            </summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+        </member>
+        <member name="M:DotNetBrowser.Internals.Ipc.Streams.IAsyncStreamWriter`1.WriteAsync(`0)">
+            <summary>
+            Writes a single asynchronously. Only one write can be pending at a time.
+            </summary>
+            <param name="message">the message to be written. Cannot be null.</param>
+        </member>
+        <member name="M:DotNetBrowser.Internals.Ipc.Streams.IAsyncStreamWriter`1.CompleteAsync">
+            <summary>
+            Completes/closes the stream. Can only be called once there is no pending write. No writes should follow calling this.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Internals.Ipc.Streams.IStreamReader`1">
+            <summary>
+                A stream of messages to be read.
+            </summary>
+            <typeparam name="TMessage">The message type.</typeparam>
+        </member>
+        <member name="P:DotNetBrowser.Internals.Ipc.Streams.IStreamReader`1.Handler">
+            <summary>
+                An action that will be used to process the message as soon as it is available in the stream.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Navigation.LoadRequestsQueue.SetLoadingResult(DotNetBrowser.Navigation.LoadResult,System.String,System.Int64)">
+            <summary>
+                Sets the LoadResult to the latest LoadRequest.
+            </summary>
+            <param name="result">The load result to set.</param>
+            <param name="cause">
+                The description of the cause that led to setting this load result. Usually, the cause
+                is a load event with some particular parameters.
+            </param>
+            <param name="ticks">
+                The timestamp (in ticks) when the causing event was received. This timestamp is used to ignore the
+                outdated events.
+            </param>
+        </member>
+        <member name="T:DotNetBrowser.Net.Certificates.Cryptography.Asn1Tag">
+            <summary>
+                ASN.1 universal tags
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Net.Certificates.Cryptography.Asn1Node">
+            <summary>
+                This class represents a data structure in ASN.1.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Net.Certificates.PrivateKeyConverter">
+            <summary>
+                This converter converts the private key defined by its parameters
+                to its DER encoded PKCS#8 form.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Util.TaskExtensions.WaitResult(System.Threading.Tasks.Task)">
+            <summary>
+            Waits for the task to complete, unwrapping any exceptions.
+            </summary>
+            <param name="task">The task. May not be <c>null</c>.</param>
+        </member>
+        <member name="M:DotNetBrowser.Util.TaskExtensions.WaitResult``1(System.Threading.Tasks.Task{``0})">
+            <summary>
+            Waits for the task to complete, unwrapping any exceptions.
+            </summary>
+            <param name="task">The task. May not be <c>null</c>.</param>
+        </member>
+    </members>
+</doc>

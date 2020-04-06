@@ -33,6 +33,7 @@ namespace AppGui
             var doc = XDocument.Parse(e.Message);
             var com = doc.Descendants("command").FirstOrDefault().Value;
             dynamic json = JsonConvert.DeserializeObject(com);
+            Console.WriteLine((string)json.ToString());
 
             Shape _s = null;
             switch ((string)json.recognized[0].ToString())

@@ -130,3 +130,4 @@ C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\AppGui\AppGui\o
 C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\AppGui\AppGui\obj\Debug\AppGui.csproj.CopyComplete
 C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\AppGui\AppGui\obj\Debug\AppGui.exe
 C:\Users\AlexandreLourenco\Desktop\GoogleMapsMultimodalInterface\AppGui\AppGui\obj\Debug\AppGui.pdb
+C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\AppGui\AppGui\obj\Debug\AppGui.csproj.CoreCompileInputs.cache

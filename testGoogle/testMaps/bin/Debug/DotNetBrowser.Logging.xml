@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetBrowser.Logging</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetBrowser.Logging.Logger">
+            <summary />
+        </member>
+        <member name="P:DotNetBrowser.Logging.Logger.Level">
+            <summary>
+                Gets or sets a value indicating enabled logging level.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Logging.Logger.#ctor(System.String)">
+            <summary />
+        </member>
+        <member name="T:DotNetBrowser.Logging.LoggerProvider">
+            <summary>
+                Provides access to different DotNetBrowser Loggers which are used to log Browser,
+                IPC and Chromium process messages.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Logging.LoggerProvider.ChromiumLogFile">
+            <summary>
+                The absolute or relative path to store Chromium log file.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Logging.LoggerProvider.ConsoleLoggingEnabled">
+            <summary>
+                Gets or sets a value indicating whether console logging is enabled.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Logging.LoggerProvider.FileLoggingEnabled">
+            <summary>
+                Gets or sets a value indicating whether file logging is enabled.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Logging.LoggerProvider.Instance">
+            <summary>
+                The LoggerProvider instance that can be used to configure DotNetBrowser logging.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Logging.LoggerProvider.Level">
+            <summary>
+                The minimal logging level of the messages that will appear in the logs. 
+                This value will be used to filter out log messages with lower logging level.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Logging.LoggerProvider.OutputFile">
+            <summary>
+                Gets or sets output file.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Logging.LoggerProvider.Dispose">
+            <summary>
+                Dispose object and  managed resources.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Logging.LoggerProvider.Dispose(System.Boolean)">
+            <summary>
+                Dispose object and managed resources.
+            </summary>
+            <param name="disposing">True if managed resources should be disposed</param>
+        </member>
+        <member name="M:DotNetBrowser.Logging.LoggerProvider.Finalize">
+            <summary>
+                Destructor
+            </summary>
+        </member>
+    </members>
+</doc>

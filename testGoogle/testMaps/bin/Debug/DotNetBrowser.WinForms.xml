@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetBrowser.WinForms</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetBrowser.WinForms.BitmapExtensions">
+            <summary>
+                Extensions for <see cref="T:DotNetBrowser.Ui.Bitmap" /> class.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.BitmapExtensions.ToBitmap(DotNetBrowser.Ui.Bitmap)">
+            <summary>
+                Converts the <see cref="T:DotNetBrowser.Ui.Bitmap" /> instance to <see cref="T:System.Drawing.Bitmap" />.
+            </summary>
+            <param name="bitmap">the bitmap to convert</param>
+            <returns>the converted bitmap.</returns>
+        </member>
+        <member name="T:DotNetBrowser.WinForms.BrowserView">
+            <summary>
+                The WinForms-based implementation of browser view.
+            </summary>
+            <remarks>
+                <para>
+                    To bind an instance of this view to a particular browser, use its
+                    <see cref="M:DotNetBrowser.Browser.BrowserViewExtensions.InitializeFrom(DotNetBrowser.Browser.IBrowserView,DotNetBrowser.Browser.IBrowser)" />
+                    method:
+                </para>
+                <c>
+                    browserView.InitializeFrom(browser);
+                </c>
+                <para>This method should be called from the UI thread.</para>
+            </remarks>
+            <example>
+                <code lang="C#" title="Form1.cs">
+                public partial class Form1 : Form
+                {
+                    BrowserView webView;
+            
+                    private IEngine engine;
+                    private IBrowser browser;
+            
+                    public Form1()
+                    {
+                        webView = new BrowserView() { Dock = DockStyle.Fill };
+                        InitializeComponent();
+                        try
+                        {
+                            Task.Run(() =&gt; {
+                                engine = EngineFactory.Create(new EngineOptions.Builder()
+                                {
+                                    RenderingMode = RenderingMode.HardwareAccelerated
+                                }.Build());
+                                browser = engine.CreateBrowser();
+                                
+                            }).ContinueWith((t) =&gt;
+                            {
+                                webView.InitializeFrom(browser);
+                                browser.Navigation.LoadUrl("https://google.com");
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+                        }
+                        catch (Exception exception)
+                        {
+                            Debug.WriteLine(exception);
+                        }
+                        FormClosing += Form1_FormClosing;
+                        Controls.Add(webView);
+                    }
+            
+                    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+                    {
+                        browser?.Dispose();
+                        engine?.Dispose();
+                    }
+                }
+             </code>
+            </example>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.BrowserView.MenuItems">
+            <summary>
+                The collection of the current context menu items.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.BrowserView.ShowContextMenuHandler">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.WinForms.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#CreatePopupHandler">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.WinForms.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#DefaultDialogs">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.WinForms.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#DefaultJsDialogs">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.WinForms.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#OpenPopupHandler">
+            <inheritdoc />
+        </member>
+        <member name="M:DotNetBrowser.WinForms.BrowserView.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:DotNetBrowser.WinForms.BrowserView" /> class.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.BrowserView.OnFocusRequested(System.Object,System.EventArgs)">
+            <summary>
+                This method is used to handle <see cref="E:DotNetBrowser.Browser.IBrowser.FocusRequested" /> event.
+            </summary>
+            <param name="sender">the event sender.</param>
+            <param name="e">the event arguments.</param>
+        </member>
+        <member name="T:DotNetBrowser.WinForms.ContextMenu.MenuItemViewModel">
+            <summary>
+                Provides info about context menu item.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.ContextMenu.MenuItemViewModel.Header">
+            <summary>
+                Gets context menu item text/label. Returns empty string if menu item represents separator.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.ContextMenu.MenuItemViewModel.IsCheckable">
+            <summary>
+                Indicates whether context menu item is a checkable item.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.ContextMenu.MenuItemViewModel.IsChecked">
+            <summary>
+                Indicates whether context menu item is checked or not.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.ContextMenu.MenuItemViewModel.IsEnabled">
+            <summary>
+                Indicates whether context menu item is enabled or not.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.ContextMenu.MenuItemViewModel.MenuItems">
+            <summary>
+                Gets a list of sub-items or empty collection if the item doesn't have sub-items.
+            </summary>
+        </member>
+        <member name="F:DotNetBrowser.WinForms.Dialogs.AuthenticationDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.AuthenticationDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.AuthenticationDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.WinForms.Dialogs.ColorExtensions">
+            <summary>
+                Extension methods for performing color conversion.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.ColorExtensions.ToColor(DotNetBrowser.Ui.Color)">
+             <summary>
+                Converts the <see cref="T:DotNetBrowser.Ui.Color" /> instance to <see cref="T:System.Drawing.Color" />.
+            </summary>
+            <param name="color">the color to convert</param>
+            <returns>the converted color.</returns>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.ColorExtensions.ToUIColor(System.Drawing.Color)">
+             <summary>
+                Converts the <see cref="T:System.Drawing.Color" /> instance to <see cref="T:DotNetBrowser.Ui.Color" />.
+            </summary>
+            <param name="color">the color to convert</param>
+            <returns>the converted color.</returns>
+        </member>
+        <member name="F:DotNetBrowser.WinForms.Dialogs.CustomizableDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.CustomizableDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.CustomizableDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.WinForms.Dialogs.DefaultAuthenticationHandler">
+            <summary>
+                Default WinForms authentication handler, which displays an authentication dialog.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.DefaultAuthenticationHandler.#ctor(System.Windows.Forms.Control)">
+            <inheritdoc />
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.DefaultAuthenticationHandler.Handle(DotNetBrowser.Net.Handlers.AuthenticateParameters)">
+            <summary>
+                This method is called when the Chromium callback needs a response that may be
+                determined based on the provided parameters.
+            </summary>
+            <param name="parameters">the handler parameters.</param>
+            <returns>
+                an object that represents the response that should be
+                determined based on the provided parameters.
+            </returns>
+        </member>
+        <member name="T:DotNetBrowser.WinForms.Dialogs.DefaultStartDownloadHandler">
+            <summary>
+                The default WinForms implementation of <see cref="P:DotNetBrowser.Downloads.IDownloads.StartDownloadHandler" />, which displays a
+                save file
+                dialog to specify the path to store the downloaded file.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.Dialogs.DefaultStartDownloadHandler.InitialDirectory">
+            <summary>
+                The initial directory that is displayed by the file dialog.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.DefaultStartDownloadHandler.#ctor(System.Windows.Forms.Control)">
+            <inheritdoc />
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.DefaultStartDownloadHandler.Handle(DotNetBrowser.Downloads.Handlers.StartDownloadParameters)">
+            <summary>
+                This method is called when the Chromium callback needs a response that may be
+                determined based on the provided parameters.
+            </summary>
+            <param name="startDownloadParameters">the item for which the download is about to be started.</param>
+            <returns>
+                an object that represents the response that should be
+                determined based on the provided parameters.
+            </returns>
+        </member>
+        <member name="T:DotNetBrowser.WinForms.Dialogs.DialogHandlerBase">
+            <summary>
+                The base class for all dialog handlers.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.WinForms.Dialogs.DialogHandlerBase.Parent">
+            <summary>
+                The parent object for the dialog displayed by this handler. This object is used to locate the owner window for the
+                modal dialogs.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.WinForms.Dialogs.DialogHandlerBase.#ctor(System.Windows.Forms.Control)">
+            <summary>
+                Creates and initializes the dialog handler.
+            </summary>
+            <param name="parent">The parent object for the dialog displayed by this handler.</param>
+        </member>
+        <member name="F:DotNetBrowser.WinForms.Input.Keyboard.KeyExtensions.VirtualKeyMapping">
+            <summary>
+                <para>Contains the mapping of WinForms keys to DotNetBrowser keys.</para>
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -85,7 +85,7 @@ namespace speechModality {
                     if (json.Split(new string[] { "action" }, StringSplitOptions.None).Length > 3) {
                         t.Speak("Utilize só um comando de cada vez.");
                     } else {
-                        App.Current.Dispatcher.Invoke(() => {
+                        //App.Current.Dispatcher.Invoke(() => {
                             if (tojson.action != null) {
                                 switch ((string)tojson.action.ToString()) {
 
@@ -135,8 +135,9 @@ namespace speechModality {
                                         break;
                                 }
                             } else { t.Speak("Olá! Como posso ajudar?"); }
-                        });
+                        //});
                         var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
+                        Console.WriteLine((string)exNot.ToString());
                         mmic.Send(exNot);
                     }
                 }

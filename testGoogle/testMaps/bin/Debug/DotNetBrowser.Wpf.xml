@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetBrowser.Wpf</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetBrowser.Wpf.BitmapExtensions">
+            <summary>
+                Extensions for <see cref="T:DotNetBrowser.Ui.Bitmap" /> class.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.BitmapExtensions.ToBitmap(DotNetBrowser.Ui.Bitmap)">
+            <summary>
+                Converts the <see cref="T:DotNetBrowser.Ui.Bitmap" /> instance to <see cref="T:System.Drawing.Bitmap" />.
+            </summary>
+            <param name="bitmap">the bitmap to convert</param>
+            <returns>the converted bitmap.</returns>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.BitmapExtensions.ToBitmap(DotNetBrowser.Ui.Bitmap,System.Drawing.Imaging.PixelFormat)">
+            <summary>
+                Converts the <see cref="T:DotNetBrowser.Ui.Bitmap" /> instance to <see cref="T:System.Drawing.Bitmap" />.
+            </summary>
+            <param name="bitmap">the bitmap to convert</param>
+            <param name="pixelFormat">The pixel format for the new System.Drawing.Bitmap.
+            This must specify a value that begins with Format.</param>
+            <returns>the converted bitmap.</returns>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.BrowserView">
+            <summary>
+                The Wpf-based implementation of browser view.
+            </summary>
+            <remarks>
+                <para>
+                    To bind an instance of this view to a particular browser, use its <see cref="M:DotNetBrowser.Browser.BrowserViewExtensions.InitializeFrom(DotNetBrowser.Browser.IBrowserView,DotNetBrowser.Browser.IBrowser)" />
+                    method:
+                </para>
+                <c>
+                    browserView.InitializeFrom(browser);
+                </c>
+                <para>This method should be called from the UI thread.</para>
+            </remarks>
+            <example>
+                <code lang="XML" title="MainWindow.xaml">
+            &lt;Window x:Class="WpfApp1.MainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:WpfApp1"
+                    xmlns:wpf="clr-namespace:DotNetBrowser.Wpf;assembly=DotNetBrowser.Wpf"
+                    mc:Ignorable="d"
+                    Title="MainWindow" Height="450" Width="800" Closing="Window_Closing"&gt;
+                &lt;Grid&gt;
+                    &lt;wpf:BrowserView Name ="BrowserView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/&gt;
+                &lt;/Grid&gt;
+            &lt;/Window&gt;
+             
+             </code>
+                <code lang="C#" title="MainWindow.xaml.cs">
+                public partial class MainWindow : Window
+                {
+                    private IEngine engine;
+                    private IBrowser browser;
+            
+                    public MainWindow()
+                    {
+                        try
+                        {
+                            Task.Run(() =&gt; {
+                                engine = EngineFactory.Create(new EngineOptions.Builder()
+                                {
+                                    RenderingMode = RenderingMode.HardwareAccelerated
+                                }.Build());
+                                browser = engine.CreateBrowser();
+                                
+                            }).ContinueWith((t) =&gt;
+                            {
+                                BrowserView.InitializeFrom(browser);
+                                browser.Navigation.LoadUrl("https://www.teamdev.com/");
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+            
+                            InitializeComponent();
+                        }
+                        catch (Exception exception)
+                        {
+                            Debug.WriteLine(exception);
+                        }
+                    }
+            
+                    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+                    {
+                        engine.Dispose();
+                    }
+                }
+             
+             </code>
+            </example>
+            <summary>
+            BrowserView
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Wpf.BrowserView.MenuItems">
+            <summary>
+                The collection of the current context menu items.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Wpf.BrowserView.ShowContextMenuHandler">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.Wpf.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#CreatePopupHandler">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.Wpf.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#DefaultDialogs">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.Wpf.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#DefaultJsDialogs">
+            <inheritdoc />
+        </member>
+        <member name="P:DotNetBrowser.Wpf.BrowserView.DotNetBrowser#Browser#IBrowserViewImpl#OpenPopupHandler">
+            <inheritdoc />
+        </member>
+        <member name="M:DotNetBrowser.Wpf.BrowserView.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:DotNetBrowser.Wpf.BrowserView"/> class.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.BrowserView.OnFocusRequested(System.Object,System.EventArgs)">
+            <summary>
+                This method is used to handle <see cref="E:DotNetBrowser.Browser.IBrowser.FocusRequested"/> event.
+            </summary>
+            <param name="sender">the event sender.</param>
+            <param name="e">the event arguments.</param>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.BrowserView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.Dialogs.AuthenticationDialog">
+            <summary>
+                Interaction logic for AuthenticationDialog.xaml
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.AuthenticationDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.Dialogs.ColorExtensions">
+            <summary>
+                Extension methods for performing color conversion.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.ColorExtensions.ToColor(DotNetBrowser.Ui.Color)">
+             <summary>
+                Converts the <see cref="T:DotNetBrowser.Ui.Color" /> instance to <see cref="T:System.Drawing.Color" />.
+            </summary>
+            <param name="color">the color to convert</param>
+            <returns>the converted color.</returns>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.ColorExtensions.ToUIColor(System.Drawing.Color)">
+             <summary>
+                Converts the <see cref="T:System.Drawing.Color" /> instance to <see cref="T:DotNetBrowser.Ui.Color" />.
+            </summary>
+            <param name="color">the color to convert</param>
+            <returns>the converted color.</returns>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.Dialogs.CustomizableDialog">
+            <summary>
+                Interaction logic for CustomizableDialog.xaml
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.CustomizableDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.Dialogs.DefaultAuthenticationHandler">
+            <summary>
+                Default Wpf authentication handler, which displays an authentication dialog.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.DefaultAuthenticationHandler.#ctor(System.Windows.DependencyObject)">
+            <inheritdoc />
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.DefaultAuthenticationHandler.Handle(DotNetBrowser.Net.Handlers.AuthenticateParameters)">
+            <summary>
+                This method is called when the Chromium callback needs a response that may be
+                determined based on the provided parameters.
+            </summary>
+            <param name="parameters">the handler parameters.</param>
+            <returns>
+                an object that represents the response that should be
+                determined based on the provided parameters.
+            </returns>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.Dialogs.DefaultStartDownloadHandler">
+            <summary>
+                The default Wpf implementation of <see cref="P:DotNetBrowser.Downloads.IDownloads.StartDownloadHandler" />, which displays a save file
+                dialog to specify the path to store the downloaded file.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Wpf.Dialogs.DefaultStartDownloadHandler.InitialDirectory">
+            <summary>
+                The initial directory that is displayed by the file dialog.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.DefaultStartDownloadHandler.#ctor(System.Windows.DependencyObject)">
+            <inheritdoc />
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.DefaultStartDownloadHandler.Handle(DotNetBrowser.Downloads.Handlers.StartDownloadParameters)">
+            <summary>
+                This method is called when the Chromium callback needs a response that may be
+                determined based on the provided parameters.
+            </summary>
+            <param name="startDownloadParameters">the item for which the download is about to be started.</param>
+            <returns>
+                an object that represents the response that should be
+                determined based on the provided parameters.
+            </returns>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.Dialogs.DialogHandlerBase">
+            <summary>
+                The base class for all dialog handlers.
+            </summary>
+        </member>
+        <member name="P:DotNetBrowser.Wpf.Dialogs.DialogHandlerBase.Parent">
+            <summary>
+                The parent object for the dialog displayed by this handler. This object is udes to locate the owner window for the
+                modal dialogs.
+            </summary>
+        </member>
+        <member name="M:DotNetBrowser.Wpf.Dialogs.DialogHandlerBase.#ctor(System.Windows.DependencyObject)">
+            <summary>
+                Creates and initializes the dialog handler.
+            </summary>
+            <param name="parent">The parent object for the dialog displayed by this handler.</param>
+        </member>
+        <member name="F:DotNetBrowser.Wpf.Input.Keyboard.KeyExtensions.VirtualKeyMapping">
+            <summary>
+                <para>Contains the mapping of Wpf keys to DotNetBrowser keys.</para>
+            </summary>
+            <remarks>
+                <para>Some keys are not mapped here and will not be resolved properly:</para>
+                <para>Key.LineFeed</para>
+                <para>Key.PrintScreen</para>
+                <para>Key.OemSemicolon</para>
+                <para>Key.OemQuestion</para>
+                <para>Key.OemTilde</para>
+                <para>Key.AbntC1</para>
+                <para>Key.AbntC2</para>
+                <para>Key.OemOpenBrackets</para>
+                <para>Key.OemPipe</para>
+                <para>Key.OemCloseBrackets</para>
+                <para>Key.OemQuotes</para>
+                <para>Key.OemBackslash</para>
+                <para>Key.ImeProcessed</para>
+                <para>Key.System</para>
+                <para>Key.OemAttn</para>
+                <para>Key.OemFinish</para>
+                <para>Key.DbeKatakana</para>
+                <para>Key.OemCopy</para>
+                <para>Key.DbeHiragana</para>
+                <para>Key.OemAuto</para>
+                <para>Key.DbeSbcsChar</para>
+                <para>Key.OemEnlw</para>
+                <para>Key.DbeDbcsChar</para>
+                <para>Key.OemBackTab</para>
+                <para>Key.DbeRoman</para>
+                <para>Key.DbeNoRoman</para>
+                <para>Key.DbeEnterWordRegisterMode</para>
+                <para>Key.DbeEnterImeConfigureMode</para>
+                <para>Key.DbeFlushString</para>
+                <para>Key.DbeCodeInput</para>
+                <para>Key.DbeNoCodeInput</para>
+                <para>Key.DbeDetermineString</para>
+                <para>Key.DbeEnterDialogConversionMode</para>
+                <para>Key.DeadCharProcessed</para>
+                <para>KeyCode.LButton</para>
+                <para>KeyCode.RButton</para>
+                <para>KeyCode.MButton</para>
+                <para>KeyCode.XButton1</para>
+                <para>KeyCode.XButton2</para>
+                <para>KeyCode.Shift</para>
+                <para>KeyCode.Control</para>
+                <para>KeyCode.Menu</para>
+                <para>KeyCode.Hangeul</para>
+                <para>KeyCode.Processkey</para>
+                <para>KeyCode.Packet</para>
+            </remarks>
+        </member>
+        <member name="F:DotNetBrowser.Wpf.NativeMethods.WM_ACTIVATEAPP">
+            <summary>
+                <para>
+                    Sent when a window belonging to a different application than the active window
+                    is about to be activated. The message is sent to the application whose window
+                    is being activated and to the application whose window is being deactivated.
+                </para>
+                <para>
+                    wParam indicates whether the window is being activated or deactivated.
+                    This parameter is TRUE if the window is being activated; it is FALSE 
+                    if the window is being deactivated.
+                </para>
+            </summary>
+        </member>
+        <member name="T:DotNetBrowser.Wpf.RenderView">
+            <summary>
+                Interaction logic for RenderView.xaml
+            </summary>
+        </member>
+    </members>
+</doc>
