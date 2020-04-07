@@ -8,9 +8,12 @@
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#coffee"/><tag>out.coffee=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#restaurant"/><tag>out.restaurant=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#health"/><tag>out.health=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#directions"/><tag>out.directions=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#info"/><tag>out.info=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#consume"/><tag>out.consume=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#types"/><tag>out.types=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#spots"/><tag>out.spots=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#nearby"/><tag>out.nearby=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#location"/><tag>out.location=rules.latest();</tag></item>
@@ -47,6 +50,8 @@
       <item repeat="0-1">aqui perto</item>
     </one-of>
   </rule>
+  
+  <!-- Rules for getting directions-->
   <rule id="directions">
     <one-of>
       <item>percurso<tag>out.action="DIRECTIONS"</tag></item>
@@ -64,8 +69,8 @@
     </one-of>
   </rule>
 
-  <!-- Rules for diferent services -->
-  <rule id="consume">
+  <!-- Rules for diferent types of services -->
+  <rule id="types">
     <one-of>
       <item>restaurante<tag>out.service="restaurant"</tag></item>
       <item>bar<tag>out.service="bar"</tag></item>
@@ -83,7 +88,7 @@
       <item>parque diversões<tag>out.service="amusement_park"</tag></item>
       <item>livraria<tag>out.service="book_store"</tag></item>
       <item>paragem autocarro<tag>out.service="bus_station"</tag></item>
-       <item>parque campismo<tag>out.service="campground"</tag></item>
+      <item>parque campismo<tag>out.service="campground"</tag></item>
       <item>oficina<tag>out.service="car_repair"</tag></item>
       <item>lavagem carros<tag>out.service="car_wash"</tag></item>
       <item>casino<tag>out.service="casino"</tag></item>
@@ -118,18 +123,104 @@
   <!-- Rule for a specific local-->
   <rule id="spots">
     <one-of>
+      <item repeat="0-1">o</item>
+      <item repeat="0-1">os</item>
+    </one-of>
+    <one-of>
       <item>mcdonalds<tag>out.local="mcdonald's"</tag></item>
       <item>continente<tag>out.local="continente"</tag></item>
       <item>forum<tag>out.local="forum"</tag></item>
       <item>glicinias<tag>out.local="glicinias"</tag></item>
       <item>altice<tag>out.local="altice"</tag></item>
       <item>ria<tag>out.local="ria"</tag></item>
-      <item>universidade de aveiro<tag>out.local="universidade de aveiro"</tag></item>
+      <!--<item>universidade de aveiro<tag>out.local="universidade de aveiro"</tag></item>-->
       <item>pingo doce<tag>out.local="pingo doce"</tag></item>
+      <item>salinas<tag>out.local="salinas"</tag></item>
+      <item>teatro aveirense<tag>out.local="teatro aveirense"</tag></item>
+      <item>loja do cidadão<tag>out.local="loja do cidadão"</tag></item>
+      <item>centro de saude<tag>out.local="centro de saude"</tag></item>
+      <item>segurança social<tag>out.local="segurança social"</tag></item>
+      <item>correios<tag>out.local="ctt"</tag></item>
+      <item>correios<tag>out.local="ctt"</tag></item>
+      <item>estação<tag>out.local="estação de aveiro"</tag></item>
+      <item>comboio<tag>out.local="estação de aveiro"</tag></item>
+      <item>veterinário<tag>out.local="veterinário"</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- Rule for coffee shops-->
+  <rule id="coffee">
+    <one-of>
+      <item repeat="0-1">o</item>
+      <item repeat="0-1">a</item>
+      <item repeat="0-1">pastelaria</item>
+      <item repeat="0-1">cafetaria</item>
+      <item repeat="0-1">padaria</item>
+      <item repeat="0-1">café</item>
+    </one-of>
+    <one-of>
+      <item>girassol<tag>out.local="cafetaria girassol"</tag></item>
+      <item>monlou<tag>out.local="monlou"</tag></item>
+      <item>barrica<tag>out.local="café a barrica"</tag></item>
+      <item>convívio<tag>out.local="convívio"</tag></item>
+      <item>ria<tag>out.local="ria café"</tag></item>
+      <item>doce<tag>out.local="doce aveiro"</tag></item>
+      <item>avenida<tag>out.local="avenida café"</tag></item>
+      <item>flor<tag>out.local="pastelaria flor de aveiro"</tag>
+      </item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">de</item>
+    </one-of>
+  </rule>
+
+  <!-- Rule for restaurants-->
+  <rule id="restaurant">
+    <one-of>
+      <item repeat="0-1">o</item>
+      <item repeat="0-1">a</item>
+      <item repeat="0-1">restaurante</item>
+    </one-of>
+    <one-of>
+      <item>ramona<tag>out.local="ramona"</tag></item>
+      <item>batel<tag>out.local="restaurante o batel"</tag></item>
+      <item>subenshi<tag>out.local="subenshi"</tag></item>
+      <item>kyoto<tag>out.local="kyoto"</tag></item>
+      <item>mercado<tag>out.local="restaurante mercado peixe"</tag></item>
+      <item>rodízio<tag>out.local="espeto do sul"</tag></item>
+      <item>maré cheia<tag>out.local="maré cheia"</tag></item>
+      <item>salpoente<tag>out.local="salpoente"</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- Rule for health care-->
+  <rule id="health">
+    <one-of>
+      <item repeat="0-1">o</item>
+      <item repeat="0-1">a</item>
+      <item repeat="0-1">hospital</item>
+      <item repeat="0-1">farmácia</item>
+      <item repeat="0-1">centro</item>
+      <item repeat="0-1">saude</item>
+      <item repeat="0-1">clínica</item>
+      <item repeat="0-1">da</item>
+      <item repeat="0-1">do</item>
+      <item repeat="0-1">de</item>
+    </one-of>
+    <one-of>
+      <item>luz<tag>out.local="hospital da luz"</tag></item>
+      <item>baixo vouga<tag>out.local="centro hospitalar baixo vouga"</tag></item>
+      <item>saude<tag>out.local="centro de saude"</tag></item>
+      <item>veterinário<tag>out.local="hospital veterinário"</tag></item>
+      <item>veterenária<tag>out.local="clínica veterinária"</tag></item>
+      <item>médico<tag>out.local="centro médico"</tag></item>
+    </one-of>
+    <one-of>
+      <item repeat="0-1">de</item>
     </one-of>
   </rule>
   
-  <!-- Rule for get location-->
+  <!-- Rule for getting a location-->
   <rule id="location">
     <one-of>
       <item>Aveiro<tag>out.location="aveiro"</tag></item>
@@ -243,6 +334,8 @@
       <item>adeus<tag>out.action="SHUTDOWN"</tag></item>
     </one-of>
   </rule>
+  
+  <!-- Rules for neaby-->
   <rule id="nearby">
     <one-of>
       <item>perto<tag>out.nearby="NEARBY"</tag></item>
