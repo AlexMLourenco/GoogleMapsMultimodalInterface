@@ -66,6 +66,7 @@ namespace speechModality {
                         Console.WriteLine(key.Key);
                     }
                 }
+                json += "\"" + "mode" + "\": " + "\"" + this.mode + "\",\n ";
                 json = json.Substring(0, json.Length - 1);
                 json += "\n}";
                 Console.WriteLine(json);

@@ -78,12 +78,40 @@
       <item>banco<tag>out.service="bank"</tag></item>
       <item>bancos<tag>out.service="bank"</tag></item>
       <item>multibanco<tag>out.service="atm"</tag></item>
-      <item>universidade<tag>out.service="atm"</tag></item>
+      <item>universidade<tag>out.service="university"</tag></item>
+      <item>aeroporto<tag>out.service="airport"</tag></item>
+      <item>parque diversões<tag>out.service="amusement_park"</tag></item>
+      <item>livraria<tag>out.service="book_store"</tag></item>
+      <item>paragem autocarro<tag>out.service="bus_station"</tag></item>
+       <item>parque campismo<tag>out.service="campground"</tag></item>
+      <item>oficina<tag>out.service="car_repair"</tag></item>
+      <item>lavagem carros<tag>out.service="car_wash"</tag></item>
+      <item>casino<tag>out.service="casino"</tag></item>
+      <item>cemitério<tag>out.service="cemetery"</tag></item>
+      <item>igreja<tag>out.service="church"</tag></item>
+      <item>dentista<tag>out.service="dentist"</tag></item>
+      <item>bombeiros<tag>out.service="fire_station"</tag></item>
+      <item>bomba gasolina<tag>out.service="gas_station"</tag></item>
+      <item>ginásio<tag>out.service="gym"</tag></item>
+      <item>lavandaria<tag>out.service="laundry"</tag></item>
+      <item>alojamento<tag>out.service="lodging"</tag></item>
+      <item>biblioteca<tag>out.service="library"</tag></item>
+      <item>discoteca<tag>out.service="night_club"</tag></item>
+      <item>parque<tag>out.service="park"</tag></item>
+      <item>paque estacionamento<tag>out.service="parking"</tag></item>
+      <item>farmácia<tag>out.service="pharmacy"</tag></item>
+      <item>escola<tag>out.service="school"</tag></item>
+      <item>centro comercial<tag>out.service="shopping_mall"</tag></item>
+      <item>supermercado<tag>out.service="supermarket"</tag></item>
+      <item>paragem táxis<tag>out.service="taxi_stand"</tag></item>
+      <item>estação comboios<tag>out.service="train_station"</tag></item>
+      <item>atração turística<tag>out.service="tourist_attraction"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">um</item>
       <item repeat="0-1">uma</item>
       <item repeat="0-1">outro</item>
+      <item repeat="0-1">de</item>
     </one-of>
   </rule>
 
