@@ -50,3 +50,7 @@ C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testM
 C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\obj\Debug\testMaps.csproj.CopyComplete
 C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\obj\Debug\testMaps.exe
 C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\obj\Debug\testMaps.pdb
+C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\bin\Debug\WebDriver.dll
+C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\bin\Debug\WebDriver.Support.dll
+C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\bin\Debug\WebDriver.xml
+C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface\testGoogle\testMaps\bin\Debug\WebDriver.Support.xml

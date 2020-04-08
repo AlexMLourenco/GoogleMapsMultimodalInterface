@@ -19,15 +19,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Configuration;
-
-
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using System.Windows.Threading;
+using Keys = OpenQA.Selenium.Keys;
 
 namespace testMaps
 {
     public partial class Form1 : Form
     {
         private MmiCommunication mmiC;
-
+        IWebDriver googledriver = new ChromeDriver(@"C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface");
         private String startupPath = Environment.CurrentDirectory;
         private String path = "";
 
@@ -43,12 +45,19 @@ namespace testMaps
             button1.Click += new EventHandler(button1_Click);
             mmiC = new MmiCommunication("localhost", 8000, "User1", "GUI");
             mmiC.Message += MmiC_Message;
+            
             mmiC.Start();
         }
 
         private void Form1_Load(object sender, EventArgs e) {
             path = startupPath + "/../../html/googleMaps.html";
             webBrowser1.Navigate(new System.Uri(@"file:///"+path));
+            googledriver.Navigate().GoToUrl("https://www.google.pt/maps");
+            googledriver.Navigate().Back();
+            //id = "searchboxinput"
+
+
+
         }
 
         private void button1_Click(object sender, EventArgs e) {
@@ -60,7 +69,9 @@ namespace testMaps
                 Console.WriteLine(this.URL);
                 this.street = street;
                 this.flag = true;
-            }   
+            }
+            //googledriver.FindElement(By.Id("searchboxinput")).SendKeys("McDonald's");
+            //googledriver.FindElement(By.Id("searchboxinput")).SendKeys(Keys.Enter);
             
             HtmlDocument html = this.webBrowser1.Document; 
             HtmlElementCollection doc = html.GetElementsByTagName("iframe").GetElementsByName("iframe1");//.SetAttribute("src", "ola");
@@ -71,21 +82,30 @@ namespace testMaps
 
         private void MmiC_Message(object sender, MmiEventArgs e)
         {
-            Console.WriteLine(e.Message);
-            var doc = XDocument.Parse(e.Message);
-            var com = doc.Descendants("command").FirstOrDefault().Value;
-            dynamic json = JsonConvert.DeserializeObject(com);
-            Console.WriteLine((string)json.ToString());
-            if (json.action != null) {
-                switch ((string)json.action.ToString()){
-                    case "SEARCH":  
-                        setWebBrowser(json);          
-                        break;
-                    case "DIRECTIONS":
-                        setWebBrowser(json);
-                        break; 
+
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+            {
+                //
+
+                Console.WriteLine(e.Message);
+                var doc = XDocument.Parse(e.Message);
+                var com = doc.Descendants("command").FirstOrDefault().Value;
+                dynamic json = JsonConvert.DeserializeObject(com);
+                Console.WriteLine((string)json.ToString());
+                if (json.action != null)
+                {
+                    switch ((string)json.action.ToString())
+                    {
+                        case "SEARCH":
+                            setWebBrowser(json);
+                            break;
+                        case "DIRECTIONS":
+                            setWebBrowser(json);
+                            break;
+                    }
                 }
-            }
+            });
+            
         }
         public void setWebBrowser(dynamic json) {
             string tmpURL = "";
@@ -114,7 +134,8 @@ namespace testMaps
                         tmpURL += "+in+" + (string)json.location.ToString();
                 }
                 this.URL = tmpURL;
-            }     
+            }
+
         }  
     }
 }
