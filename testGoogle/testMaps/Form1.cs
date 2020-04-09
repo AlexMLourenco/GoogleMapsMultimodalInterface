@@ -32,18 +32,20 @@ namespace testMaps
         IWebDriver googledriver = new ChromeDriver(@"C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface");
         private String startupPath = Environment.CurrentDirectory;
         private String path = "";
-
+        private browserCommands command;
         private string[] coords = new string[2];
         private string street = "";
         private CLocation coord = new CLocation();
         private string URL = "";
         private Boolean flag = false;
+        dynamic json;
         
         public Form1() {
             InitializeComponent();
             this.coord.GetLocationEvent();
             button1.Click += new EventHandler(button1_Click);
             mmiC = new MmiCommunication("localhost", 8000, "User1", "GUI");
+            command = new browserCommands();
             mmiC.Message += MmiC_Message;
             
             mmiC.Start();
@@ -53,7 +55,7 @@ namespace testMaps
             path = startupPath + "/../../html/googleMaps.html";
             webBrowser1.Navigate(new System.Uri(@"file:///"+path));
             googledriver.Navigate().GoToUrl("https://www.google.pt/maps");
-            googledriver.Navigate().Back();
+            //googledriver.Navigate().Back();
             //id = "searchboxinput"
 
 
@@ -61,7 +63,7 @@ namespace testMaps
         }
 
         private void button1_Click(object sender, EventArgs e) {
-
+            /*
             if(this.flag == false) {
                 this.coords = this.coord.getCoords();
                 string street = this.coord.GetCoordinates(this.coords);
@@ -70,14 +72,16 @@ namespace testMaps
                 this.street = street;
                 this.flag = true;
             }
-            //googledriver.FindElement(By.Id("searchboxinput")).SendKeys("McDonald's");
-            //googledriver.FindElement(By.Id("searchboxinput")).SendKeys(Keys.Enter);
-            
+            */
+
+            /*
             HtmlDocument html = this.webBrowser1.Document; 
             HtmlElementCollection doc = html.GetElementsByTagName("iframe").GetElementsByName("iframe1");//.SetAttribute("src", "ola");
             foreach (HtmlElement elem in doc){
                 elem.SetAttribute("src", this.URL);    
             }   
+            */
+           
         }
 
         private void MmiC_Message(object sender, MmiEventArgs e)
@@ -97,10 +101,11 @@ namespace testMaps
                     switch ((string)json.action.ToString())
                     {
                         case "SEARCH":
-                            setWebBrowser(json);
+                            this.json = json;
+                            command.searchLocation(googledriver, coord, json);
                             break;
                         case "DIRECTIONS":
-                            setWebBrowser(json);
+                            command.getDirections(googledriver, coord,json);
                             break;
                     }
                 }

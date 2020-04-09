@@ -85,6 +85,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="browserCommands.cs" />
     <Compile Include="CLocation.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
