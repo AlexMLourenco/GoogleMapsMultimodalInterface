@@ -94,22 +94,22 @@ namespace speechModality {
                                         if ((string)tojson.location != null) {
                                             // Get the closest input for that location (restaurant, coffee shop, etc)
                                             if ((string)tojson.nearby != null)  // If there's no one in one km it return a message
-                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), (string)tojson.location.ToString()));
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(),null, (string)tojson.location.ToString()));
 
                                             // Number of inputs(restaurants, coffee, etc) in a radious of 5km from that location
                                             else
-                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), (string)tojson.location.ToString()));
+                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(),null, (string)tojson.location.ToString()));
 
 
                                         } // When the input DOESN'T contain an location (use coordinates)
                                         else {
                                             // Get the closest input using coordinates (restaurant, coffee shop, etc)
                                             if ((string)tojson.nearby != null)
-                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), null));
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(),null, null));
 
                                             // Number of inputs (restaurants, coffee, etc) in a radious of 5km from that coordinates
                                             else
-                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), null));
+                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(),null, null));
                                         }
                                     }
 
@@ -119,21 +119,23 @@ namespace speechModality {
                                         if ((string)tojson.location != null) {
                                             // Get the closest input for that location (McDonald's, Forum, etc)
                                             if ((string)tojson.nearby != null)
-                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.location.ToString()));
 
                                             // Number of inputs(McDonald's, Forum, etc) in a radious of 5km from that location
                                             else
-                                                break;
+                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.location.ToString()));
+                                            
 
                                         } // When the input DOESN'T contain an location (use coordinates)
                                         else {
                                             // Get the closest input using coordinates (McDonald's, Forum, etc)
                                             if ((string)tojson.nearby != null)
-                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
 
                                             // Number of inputs (McDonald's, Forum, etc) in a radious of 5km from that coordinates
                                             else
-                                                break;
+                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
+                                            
                                         }
                                     }
 

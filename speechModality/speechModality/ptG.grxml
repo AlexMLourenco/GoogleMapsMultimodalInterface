@@ -4,6 +4,7 @@
 	  <item>
       <item repeat="0-1"><ruleref uri="#wake"/><tag>out.wake=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#change"/><tag>out.change=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#moreLess"/><tag>out.moreLess=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
@@ -18,7 +19,7 @@
       <item repeat="0-1"><ruleref uri="#nearby"/><tag>out.nearby=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#location"/><tag>out.location=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#zoom"/><tag>out.zoom=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#moreLess"/><tag>out.moreLess=rules.latest();</tag></item>
+     
       <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>   
 	  </item>
 	</rule>
@@ -81,7 +82,6 @@
       <item>hotel<tag>out.service="hotel"</tag></item>
       <item>hospital<tag>out.service="hospital"</tag> </item>
       <item>policia<tag>out.service="police"</tag></item>
-      <item>caixa geral<tag>out.service="cgd"</tag></item>
       <item>banco<tag>out.service="bank"</tag></item>
       <item>bancos<tag>out.service="bank"</tag></item>
       <item>multibanco<tag>out.service="atm"</tag></item>
@@ -135,7 +135,6 @@
       <item>glicinias<tag>out.local="glicinias"</tag></item>
       <item>altice<tag>out.local="altice"</tag></item>
       <item>ria<tag>out.local="ria"</tag></item>
-      <!--<item>universidade de aveiro<tag>out.local="universidade de aveiro"</tag></item>-->
       <item>pingo doce<tag>out.local="pingo doce"</tag></item>
       <item>salinas<tag>out.local="salinas"</tag></item>
       <item>teatro aveirense<tag>out.local="teatro aveirense"</tag></item>
@@ -147,6 +146,7 @@
       <item>estação<tag>out.local="estação de aveiro"</tag></item>
       <item>comboio<tag>out.local="estação de aveiro"</tag></item>
       <item>veterinário<tag>out.local="veterinário"</tag></item>
+      <item>caixa geral<tag>out.service="cgd"</tag></item>
     </one-of>
   </rule>
 

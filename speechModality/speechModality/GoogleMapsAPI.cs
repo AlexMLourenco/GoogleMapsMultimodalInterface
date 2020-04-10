@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace speechModality {
     class GoogleMapsAPI {
@@ -190,15 +191,36 @@ namespace speechModality {
         }
 
         //get closest spot - just for out.service
-        public String GetClosestPlace(String tojson, String service, String location) {
-
+        public String GetClosestPlace(String tojson, String service,String local, String location) {
+            // chamar distancia 
             string speach = "";
             int radius = 50;
             Boolean found = false;
             string URL = "";
             string[] coords = myLocation.getCoords();
-
-            URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
+            if (location == null)
+            {
+                if (local != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local);
+                }
+                else if (service != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
+                }
+            }
+            else
+            {
+                if (local != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}+in+{3}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local, location);
+                }
+                else if (service != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}+in+{3}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service, location);
+                }
+            }
+           
 
             while (!found && radius < 1000) {
                 string URL2 = URL + string.Format("&radius={0}", radius);
@@ -233,7 +255,7 @@ namespace speechModality {
         }
 
         //get closest spot counter
-        public String GetClosestPlaceCounter(String tojson, String service, String location) {
+        public String GetClosestPlaceCounter(String tojson, String service, String local, String location) {
 
             string speach = "";
             string URL = "";
@@ -241,9 +263,28 @@ namespace speechModality {
             string[] coords = myLocation.getCoords();
 
             if(location == null)
-                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
+            {
+                if(local != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local);
+                }
+                else if(service != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
+                }
+            }
             else
-                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}+{3}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service, location);
+            {
+                if (local != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}+in+{3}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local,location);
+                }
+                else if (service != null)
+                {
+                    URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}+in+{3}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service, location);
+                }
+            }
+               
 
             Console.WriteLine(URL);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
@@ -254,6 +295,13 @@ namespace speechModality {
                 using (Stream responseStream = response.GetResponseStream()) {
                     StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
                     dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
+                    JArray items = (JArray)tojson2.results;
+                    int length = items.Count;
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        Console.WriteLine((string)items[i].ToString());
+                        //do something with item
+                    }
 
                     if ((string)tojson2.status.ToString() == "OK")
                         speach = (string.Format("Foram encontrados {0} locais para essa pesquisa num raio de 5 quilômentros.", (string)tojson2.results.Count.ToString()));
