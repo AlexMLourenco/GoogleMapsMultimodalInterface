@@ -338,15 +338,16 @@
   <!-- Rules for neaby-->
   <rule id="nearby">
     <one-of>
-      <item>perto<tag>out.nearby="NEARBY"</tag></item>
-      <item>próximo<tag>out.nearby="NEARBY"</tag></item>
-      <item>redondezas<tag>out.nearby="NEARBY"</tag></item>
-      <item>aqui<tag>out.nearby="NEARBY"</tag></item>
-    </one-of>
-    <one-of>
       <item repeat="0-1">por</item>
       <item repeat="0-1">nas</item>
       <item repeat="0-1">mais</item>
+    </one-of>
+    <one-of>
+      <item>perto<tag>out.nearby="NEARBY"</tag></item>
+      <item>proximidades<tag>out.nearby="NEARBY"</tag></item>
+      <item>próximo<tag>out.nearby="NEARBY"</tag></item>
+      <item>redondezas<tag>out.nearby="NEARBY"</tag></item>
+      <item>aqui<tag>out.nearby="NEARBY"</tag></item>
     </one-of>
   </rule>
   

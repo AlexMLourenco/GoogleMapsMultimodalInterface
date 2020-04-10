@@ -11,32 +11,32 @@ using System.IO;
 namespace speechModality {
     class GoogleMapsAPI {
         CLocation myLocation = new CLocation();
+
         public String Nearby(String tojson, String service, String local, String mode, String location) {
 
             string speach = "";
             string URL = "";
             string identifier = "";
+            string[] coords = myLocation.getCoords();
 
             Random rand = new Random();
             int id = rand.Next(1, 100);
 
             if (local == null) {
-                if (location != null) { 
-                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+{1}+" + id + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service, location);
-                } else {
-                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro" + id + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service);
-                }
+                if (location != null)
+                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin={0},{1}&destination={2}+{3}+" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service, location);
+                else // Corrigir o +Aveiro
+                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin={0},{1}&destination={3}+Aveiro" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
             }
             else {
-                if (location != null) {
-                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+{1}" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local, location);
-                } else {
-                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local);
-                }
+                if (location != null) 
+                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin={0},{1}&destination={2}+{3}" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local, location);
+                else // Corrigir o +Aveiro
+                    URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin={0},{1}&destination={2}+Aveiro" + "&mode=" + mode + "&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local);
             }
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            
+            Console.WriteLine(URL);
             try {
                 string distancia = "";
                 string name = "";
@@ -155,10 +155,10 @@ namespace speechModality {
             return speach;
         }
 
-        public Double[] GetCoordinates(String spot) {
+        public string[] GetCoordinates(String spot) {
             double lat = 0.0000000, lng = 0.0000000;
-            double[] coords = { lat, lng };
             string URL = string.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", spot);
+            string[] coord = new string[2];
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
             try {
@@ -170,6 +170,8 @@ namespace speechModality {
                     // Getting latitude and longitude
                     lat = (double)tojson2.results[0].geometry.location.lat;
                     lng = (double)tojson2.results[0].geometry.location.lng;
+                    coord[0] = (string)lat.ToString().Replace(',', '.');
+                    coord[1] = (string)lng.ToString().Replace(',', '.');
 
                     Console.WriteLine(lat);
                     Console.WriteLine(lng);
@@ -184,70 +186,94 @@ namespace speechModality {
                 }
                 throw;
             }
-            return coords;
+            return coord;
         }
 
-        //get closest spot 
-        public String GetClosestPlace(String tojson, String service, String local)
-        {
+        //get closest spot - just for out.service
+        public String GetClosestPlace(String tojson, String service, String location) {
 
             string speach = "";
             int radius = 50;
             Boolean found = false;
             string URL = "";
             string[] coords = myLocation.getCoords();
-            if (local == null)
-            {
-                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU",coords[0],coords[1], service);
-            }
-            else
-            {
-                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local) ;
-            }
-            while (!found) {
+
+            URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
+
+            while (!found && radius < 1000) {
                 string URL2 = URL + string.Format("&radius={0}", radius);
                 Console.WriteLine(URL2);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL2);
-                try
-                {
+                try {
      
                     WebResponse response = request.GetResponse();
-                    using (Stream responseStream = response.GetResponseStream())
-                    {
+                    using (Stream responseStream = response.GetResponseStream()) {
                         StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
                         dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
-                        if((string)tojson2.status.ToString() == "OK")
-                        {
+                        if((string)tojson2.status.ToString() == "OK") {
                             speach = (string.Format("O local mais próximo é o {0}", (string)tojson2.results[0].name.ToString()));
+                            //Console.WriteLine("O local mais próximo é o {0}", (string)tojson2.results[0].name.ToString());
                             found = true;
+                        } else {
+                            //Console.WriteLine("aumentei" + radius);
+                            radius += 100;
+                            speach = "Não foi encontrado nenhum resultado num raio de 1 quilometro da sua localização.";
                         }
-                        else
-                        {
-                            Console.WriteLine("aumentei" + radius);
-                            radius += 50;
-                        }
- 
                     }
-                }
-                catch (WebException ex)
-                {
+                } catch (WebException ex) {
                     WebResponse errorResponse = ex.Response;
-                    using (Stream responseStream = errorResponse.GetResponseStream())
-                    {
+                    using (Stream responseStream = errorResponse.GetResponseStream()) {
                         StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
                         String errorText = reader.ReadToEnd();
                         speach = ("Algo de errado aconteceu");
-                    }
-                    throw;
+                    } throw;
                 }
-                
-               
             }
             return speach;
         }
-        public void setLocation()
-        {
-            myLocation.GetLocationEvent();
+
+        //get closest spot counter
+        public String GetClosestPlaceCounter(String tojson, String service, String location) {
+
+            string speach = "";
+            string URL = "";
+
+            string[] coords = myLocation.getCoords();
+
+            if(location == null)
+                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
+            else
+                URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}+{3}&radius=5000&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service, location);
+
+            Console.WriteLine(URL);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+
+            try {
+
+                WebResponse response = request.GetResponse();
+                using (Stream responseStream = response.GetResponseStream()) {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
+                    dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
+
+                    if ((string)tojson2.status.ToString() == "OK")
+                        speach = (string.Format("Foram encontrados {0} locais para essa pesquisa num raio de 5 quilômentros.", (string)tojson2.results.Count.ToString()));
+                    else
+                    {
+                        speach = "Não foi encontrado nenhum resultado num raio de 5 quilômetros.";
+                    }
+                }
+            }
+            catch (WebException ex) {
+                WebResponse errorResponse = ex.Response;
+                using (Stream responseStream = errorResponse.GetResponseStream()) {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
+                    String errorText = reader.ReadToEnd();
+                    speach = ("Algo de errado aconteceu");
+                } throw;
+            }
+            return speach;
         }
+
+        public void setLocation() { myLocation.GetLocationEvent(); }
     }
 }

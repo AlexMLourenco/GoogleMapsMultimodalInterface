@@ -17,6 +17,8 @@
       <item repeat="0-1"><ruleref uri="#spots"/><tag>out.spots=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#nearby"/><tag>out.nearby=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#location"/><tag>out.location=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#zoom"/><tag>out.zoom=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#moreLess"/><tag>out.moreLess=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#shutdown"/><tag>out.shutdown=rules.latest();</tag></item>   
 	  </item>
 	</rule>
@@ -338,15 +340,37 @@
   <!-- Rules for neaby-->
   <rule id="nearby">
     <one-of>
+      <item repeat="0-1">por</item>
+      <item repeat="0-1">nas</item>
+      <item repeat="0-1">mais</item>
+    </one-of>
+    <one-of>
       <item>perto<tag>out.nearby="NEARBY"</tag></item>
+      <item>proximidades<tag>out.nearby="NEARBY"</tag></item>
       <item>próximo<tag>out.nearby="NEARBY"</tag></item>
       <item>redondezas<tag>out.nearby="NEARBY"</tag></item>
       <item>aqui<tag>out.nearby="NEARBY"</tag></item>
     </one-of>
+  </rule>
+
+  <!-- Action zoom-->
+  <rule id="zoom">
     <one-of>
-      <item repeat="0-1">por</item>
-      <item repeat="0-1">nas</item>
-      <item repeat="0-1">mais</item>
+      <item repeat="0-1">o</item>
+    </one-of>
+    <one-of>
+      <item>zoom<tag>out.zoom="ZOOM"</tag></item>
+      <item>tamanho<tag>out.zoom="ZOOM"</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- Rules for zoom-->
+  <rule id="moreLess">
+    <one-of>
+      <item>aumentar<tag>out.action="MORE"</tag> </item>
+      <item>maior<tag>out.action="MORE"</tag></item>
+      <item>diminuir<tag>out.action="LESS"</tag></item>
+      <item>menor<tag>out.action="LESS"</tag></item>
     </one-of>
   </rule>
   

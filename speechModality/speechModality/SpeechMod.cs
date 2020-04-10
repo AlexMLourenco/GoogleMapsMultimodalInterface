@@ -77,8 +77,6 @@ namespace speechModality {
                     wake = true;
                     // Get my atual location in the beggining
                     api.setLocation();
-                    
-                    
                 }
 
                 if (wake) {
@@ -88,44 +86,74 @@ namespace speechModality {
                         //App.Current.Dispatcher.Invoke(() => {
                             if (tojson.action != null) {
                             switch ((string)tojson.action.ToString()) {
-
                                     case "SEARCH":
-                                        if ((string)tojson.nearby == null) { 
-                                            if ((string)tojson.info == null) {
-                                                if ((string)tojson.service != null) {
-                                                    // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
-                                                    if ((string)tojson.location != null)
-                                                        t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, (string)tojson.location.ToString()));
-                                                    else t.Speak(api.Nearby((string)tojson.ToString(), (string)tojson.service.ToString(), null, mode, null));
-                                                } else if ((string)tojson.local != null) {
-                                                    // McDonalds, Continente, Forum, Glicinias, Altice, Ria
-                                                    if ((string)tojson.location != null)
-                                                        t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
-                                                    else
-                                                        t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
-                                                }
-                                            } else {
-                                                if ((string)tojson.service != null) {
-                                                    t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info.ToString()));
-                                                } else if ((string)tojson.local != null) {
-                                                    if ((string)tojson.location != null)
-                                                        t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info.ToString()));
-                                                    else
-                                                        t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
-                                                }
-                                            }
-                                        }
+
+                                    // Search by restaurant, bar, coffee shop, police, amoung others
+                                    if ((string)tojson.service != null) {
+                                        // When the input contains an location like, Aveiro, Coimbra, Lisbon
+                                        if ((string)tojson.location != null) {
+                                            // Get the closest input for that location (restaurant, coffee shop, etc)
+                                            if ((string)tojson.nearby != null)  // If there's no one in one km it return a message
+                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), (string)tojson.location.ToString()));
+
+                                            // Number of inputs(restaurants, coffee, etc) in a radious of 5km from that location
+                                            else
+                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), (string)tojson.location.ToString()));
+
+
+                                        } // When the input DOESN'T contain an location (use coordinates)
                                         else {
-                                            if ((string)tojson.local != null){
-                                                t.Speak(api.GetClosestPlace((string)tojson.ToString(), null, (string)tojson.local.ToString()));
-                                            }
-                                            else if((string)tojson.service != null){
+                                            // Get the closest input using coordinates (restaurant, coffee shop, etc)
+                                            if ((string)tojson.nearby != null)
                                                 t.Speak(api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), null));
-                                            }
+
+                                            // Number of inputs (restaurants, coffee, etc) in a radious of 5km from that coordinates
+                                            else
+                                                t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), null));
                                         }
+                                    }
+
+                                    // Search by "store" like McDonald's, Forum, Altice, amoung others
+                                    else if ((string)tojson.local != null) {
+                                        // When the input contains an location like, Aveiro, Coimbra, Lisbon
+                                        if ((string)tojson.location != null) {
+                                            // Get the closest input for that location (McDonald's, Forum, etc)
+                                            if ((string)tojson.nearby != null)
+                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, (string)tojson.location.ToString()));
+
+                                            // Number of inputs(McDonald's, Forum, etc) in a radious of 5km from that location
+                                            else
+                                                break;
+
+                                        } // When the input DOESN'T contain an location (use coordinates)
+                                        else {
+                                            // Get the closest input using coordinates (McDonald's, Forum, etc)
+                                            if ((string)tojson.nearby != null)
+                                                t.Speak(api.Nearby((string)tojson.ToString(), null, (string)tojson.local.ToString(), mode, null));
+
+                                            // Number of inputs (McDonald's, Forum, etc) in a radious of 5km from that coordinates
+                                            else
+                                                break;
+                                        }
+                                    }
+
+                                    break;
+
+                                    case "MORE":    // More zoom
+
+                                        if ((string)tojson.zoom != null)
+                                            Console.WriteLine("Aumenta crl");   // Add json
+
                                         break;
 
-                                    case "CHANGE":
+                                    case "LESS":    // Less zoom
+
+                                        if ((string)tojson.zoom != null)
+                                            Console.WriteLine("Diminui crl");   // Add json
+
+                                        break;
+
+                                case "CHANGE":
                                         if (tojson.subaction == "TRANSPORTE") {
                                             if ((string)tojson.transport != null) {
                                                 // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
@@ -139,29 +167,29 @@ namespace speechModality {
                                         }
                                         else t.Speak("Peço desculpa, não entendi a origem de partida pretendida.");
                                         break;
-                                    case "DIRECTIONS":
-                                        if ((string)tojson.service != null)
-                                        {
-                                            // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
-                                            if ((string)tojson.location != null)
-                                                t.Speak("foi pedido direcções para" + (string)tojson.service.ToString() + " em " +(string)tojson.location.ToString());
-                                            else
-                                                t.Speak("foi pedido direcções para" + (string)tojson.service.ToString());
+
+                                case "DIRECTIONS":
+                                    if ((string)tojson.service != null) {
+                                        // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                        if ((string)tojson.location != null)
+                                            t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString() + " em " +(string)tojson.location.ToString());
+                                        else
+                                            t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString());
                                     }
-                                        else if ((string)tojson.local != null)
-                                        {
-                                            // McDonalds, Continente, Forum, Glicinias, Altice, Ria
-                                            if ((string)tojson.location != null)
-                                                t.Speak("foi pedido direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
-                                            else
-                                                t.Speak("foi pedido direcções para" + (string)tojson.local.ToString());
-                                    }
-                                        break;
+                                    else if ((string)tojson.local != null) {
+                                        // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                        if ((string)tojson.location != null)
+                                            t.Speak("Foram pedidas direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
+                                        else
+                                            t.Speak("Foram pedidas direcções para" + (string)tojson.local.ToString());
+                                }
+                                    break;
 
                                 case "SHUTDOWN":
                                         System.Environment.Exit(1);
                                         break;
                                 }
+
                             } else { t.Speak("Olá! Como posso ajudar?"); }
                         //});
                         var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
