@@ -88,8 +88,18 @@ namespace speechModality {
                             switch ((string)tojson.action.ToString()) {
                                     case "SEARCH":
 
+                                    // Get information about a location or service
+                                    if ((string)tojson.info != null) {
+                                        if ((string)tojson.service != null) {
+                                            t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info));
+                                        }
+                                        else if ((string)tojson.local != null) {
+                                            t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info));
+                                        }
+                                    }
+
                                     // Search by restaurant, bar, coffee shop, police, amoung others
-                                    if ((string)tojson.service != null) {
+                                    else if ((string)tojson.service != null) {
                                         // When the input contains an location like, Aveiro, Coimbra, Lisbon
                                         if ((string)tojson.location != null) {
                                             // Get the closest input for that location (restaurant, coffee shop, etc)
@@ -135,7 +145,6 @@ namespace speechModality {
                                             // Number of inputs (McDonald's, Forum, etc) in a radious of 5km from that coordinates
                                             else
                                                 t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
-                                            
                                         }
                                     }
 
@@ -144,33 +153,37 @@ namespace speechModality {
                                     case "MORE":    // More zoom
 
                                         if ((string)tojson.zoom != null)
-                                            Console.WriteLine("Aumenta crl");   // Add json
-
+                                            Console.WriteLine("Aumentei o zoom");
                                         break;
 
                                     case "LESS":    // Less zoom
 
                                         if ((string)tojson.zoom != null)
-                                            Console.WriteLine("Diminui crl");   // Add json
-
+                                            Console.WriteLine("Diminui o zoom");
                                         break;
 
                                 case "CHANGE":
-                                        if (tojson.subaction == "TRANSPORTE") {
-                                            if ((string)tojson.transport != null) {
-                                                // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
-                                                mode = (string)tojson.transport.ToString();
-                                                t.Speak(string.Format("Modo de transporte alterado para {0}", api.Translate(mode)));
-                                            }
-                                            else t.Speak("Peço desculpa, não entendi o meio de transporte.");
 
-                                        } else if (tojson.subaction == "ORIGEM") {
-                                            t.Speak("Não me perguntes isso ainda. Burro, ainda não sou assim tão avançado");
+                                    if ((string)tojson.view != null)
+                                        t.Speak("Modo de visualização alterado com sucesso");
+
+                                    else if (tojson.subaction == "TRANSPORTE") {
+                                        if ((string)tojson.transport != null) {
+                                            // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
+                                            mode = (string)tojson.transport.ToString();
+                                            t.Speak(string.Format("Modo de transporte alterado para {0}", api.Translate(mode)));
                                         }
-                                        else t.Speak("Peço desculpa, não entendi a origem de partida pretendida.");
-                                        break;
+                                        else t.Speak("Peço desculpa, não entendi o meio de transporte.");
+
+                                    } else if (tojson.subaction == "ORIGEM") {
+                                        t.Speak("Origem alterada com sucesso");
+                                    }
+                                    else t.Speak("Peço desculpa, não entendi a origem de partida pretendida.");
+
+                                    break;
 
                                 case "DIRECTIONS":
+
                                     if ((string)tojson.service != null) {
                                         // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
                                         if ((string)tojson.location != null)
@@ -188,6 +201,7 @@ namespace speechModality {
                                     break;
 
                                 case "SHUTDOWN":
+
                                         System.Environment.Exit(1);
                                         break;
                                 }

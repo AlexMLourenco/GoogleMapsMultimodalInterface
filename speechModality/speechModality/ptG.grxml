@@ -4,6 +4,7 @@
 	  <item>
       <item repeat="0-1"><ruleref uri="#wake"/><tag>out.wake=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#change"/><tag>out.change=rules.latest();</tag></item>
+      <item repeat="0-1"><ruleref uri="#view"/><tag>out.view=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#moreLess"/><tag>out.moreLess=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
@@ -243,6 +244,7 @@
       <item>modifica<tag>out.action="CHANGE"</tag></item>
       <item>alterar<tag>out.action="CHANGE"</tag></item>
       <item>altera<tag>out.action="CHANGE"</tag></item>
+      <item>muda<tag>out.action="CHANGE"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">o</item>
@@ -318,6 +320,7 @@
       <item>contacto<tag>out.info="PHONE NUMBER"</tag></item>
       <item>informação<tag>out.info="INFORMAÇÃO"</tag></item>
       <item>informações<tag>out.info="INFORMAÇÃO"</tag></item>
+      <item>distancia<tag>out.info="DISTANCIA"</tag></item>
       <item>classificação<tag>out.info="RATING"</tag></item>
     </one-of>
     <one-of>
@@ -371,6 +374,21 @@
       <item>maior<tag>out.action="MORE"</tag></item>
       <item>diminuir<tag>out.action="LESS"</tag></item>
       <item>menor<tag>out.action="LESS"</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- Rules for view-->
+  <rule id="view">
+    <one-of>
+      <item repeat="0-1">vista</item>
+      <item repeat="0-1">modo</item>
+      <item repeat="0-1">visualização</item>
+      <item repeat="0-1">para</item>
+    </one-of>
+    <one-of>
+      <item>satélite<tag>out.view="SATÉLITE"</tag></item>
+      <item>mapa<tag>out.view="MAPA"</tag></item>
+      <item>3 D<tag>out.view="3D"</tag></item>
     </one-of>
   </rule>
   

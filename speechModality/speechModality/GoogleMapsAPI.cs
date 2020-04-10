@@ -103,15 +103,20 @@ namespace speechModality {
 
             string speach = "";
             string URL = "";
+
+            string[] coords = myLocation.getCoords();
+
+
             if (local == null) {
-                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", service);
+                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin={0},{1}&destination={2}+Aveiro&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
             } else {
-                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin=Universidade+Aveiro&destination={0}+Aveiro&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", local);
+                URL = string.Format("https://maps.googleapis.com/maps/api/directions/json?origin={0},{1}&destination={2}+Aveiro&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local);
             }
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
             try {
                 string id = "";
+                string distancia = "";
                 string name = "";
                 string phone = "";
                 double rating = 0.0;
@@ -123,6 +128,7 @@ namespace speechModality {
 
                     // Getting real name of the id
                     id = (string)tojson2.geocoded_waypoints[1].place_id.ToString();
+                    distancia = CheckDistance((string)tojson2.routes[0].legs[0].distance.value.ToString());
                     URL = string.Format("https://maps.googleapis.com/maps/api/place/details/json?place_id={0}&fields=name,rating,formatted_phone_number&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", id);
                     HttpWebRequest request2 = (HttpWebRequest)WebRequest.Create(URL);
 
@@ -134,13 +140,18 @@ namespace speechModality {
                         phone = (string)tojson3.result.formatted_phone_number.ToString();
                         rating = (double)tojson3.result.rating;
                     }
-  
+
                     if (infotype == "PHONE NUMBER") {
                         speach = (string.Format("O contacto telefónico do {0} é {1}", name, phone));
-                    } else if (infotype == "RATING") {
+                    }
+                    else if (infotype == "RATING") {
                         speach = (string.Format("O {0} tem {1} de rating", name, rating));
-                    } else if (infotype == "INFORMAÇÃO") {
+                    }
+                    else if (infotype == "INFORMAÇÃO"){
                         speach = (string.Format("O contacto telefónico do {0} é {1} e tem um rating de {2}", name, phone, rating));
+                    }
+                    else if (infotype == "DISTANCIA") {
+                        speach = (string.Format("O {0} fica a {1}", name, distancia));
                     }
                 }
             } catch (WebException ex) {
@@ -190,7 +201,6 @@ namespace speechModality {
             return coord;
         }
 
-        //get closest spot - just for out.service
         public String GetClosestPlace(String tojson, String service,String local, String location) {
             // chamar distancia 
             string speach = "";
@@ -198,25 +208,19 @@ namespace speechModality {
             Boolean found = false;
             string URL = "";
             string[] coords = myLocation.getCoords();
-            if (location == null)
-            {
-                if (local != null)
-                {
+            if (location == null) {
+                if (local != null) {
                     URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local);
                 }
-                else if (service != null)
-                {
+                else if (service != null) {
                     URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service);
                 }
             }
-            else
-            {
-                if (local != null)
-                {
+            else {
+                if (local != null) {
                     URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&name={2}+in+{3}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], local, location);
                 }
-                else if (service != null)
-                {
+                else if (service != null){
                     URL = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&type={2}+in+{3}&key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU", coords[0], coords[1], service, location);
                 }
             }
