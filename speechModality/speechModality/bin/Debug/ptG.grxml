@@ -8,7 +8,6 @@
       <item repeat="0-1"><ruleref uri="#moreLess"/><tag>out.moreLess=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#subaction"/><tag>out.subaction=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#transport"/><tag>out.transport=rules.latest();</tag></item>
-      <item repeat="0-1"><ruleref uri="#position"/><tag>out.position=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#search"/><tag>out.search=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#coffee"/><tag>out.coffee=rules.latest();</tag></item>
       <item repeat="0-1"><ruleref uri="#restaurant"/><tag>out.restaurant=rules.latest();</tag></item>
@@ -259,32 +258,12 @@
     <one-of>
       <item>meio de transporte<tag>out.subaction="TRANSPORTE"</tag></item>
       <item>transporte<tag>out.subaction="TRANSPORTE"</tag></item>
-      <item>agora<tag>out.subaction="ORIGEM"</tag></item>
-      <item>começo<tag>out.subaction="ORIGEM"</tag></item>
-      <item>inicio<tag>out.subaction="ORIGEM"</tag></item>
-      <item>origem<tag>out.subaction="ORIGEM"</tag></item>
     </one-of>
     <one-of>
       <item repeat="0-1">para</item>
       <item repeat="0-1">da</item>
       <item repeat="0-1">viagem</item>
       <item repeat="0-1">do</item>
-    </one-of>
-  </rule>
-
-  <!-- Rules for getting current position -->
-  <rule id="position">
-    <one-of>
-      <item>atual<tag>out.action="GET"</tag></item>
-      <item>agora<tag>out.action="GET"</tag></item>
-    </one-of>
-    <one-of>
-      <item repeat="0-1">diz-me</item>
-      <item repeat="0-1">qual</item>
-      <item repeat="0-1">é</item>
-      <item repeat="0-1">a</item>
-      <item repeat="0-1">minha</item>
-      <item repeat="0-1">posição</item>
     </one-of>
   </rule>
   
@@ -380,14 +359,12 @@
   <!-- Rules for view-->
   <rule id="view">
     <one-of>
-      <item repeat="0-1">vista</item>
       <item repeat="0-1">modo</item>
-      <item repeat="0-1">visualização</item>
       <item repeat="0-1">para</item>
     </one-of>
     <one-of>
-      <item>satélite<tag>out.view="SATELITE"</tag></item>
-      <item>mapa<tag>out.view="MAPA"</tag></item>
+      <item>visualização<tag>out.view="view"</tag></item>
+      <item>vista<tag>out.view="view"</tag></item>
     </one-of>
   </rule>
   

@@ -196,11 +196,8 @@ namespace speechModality {
                                                 t.Speak(string.Format("Modo de transporte alterado para {0}", api.Translate(mode)));
                                             }
                                             else t.Speak("Peço desculpa, não entendi o meio de transporte.");
-
-                                        } else if (tojson.subaction == "ORIGEM") {
-                                            t.Speak("Origem alterada com sucesso");
                                         }
-                                        else t.Speak("Peço desculpa, não entendi a origem de partida pretendida.");
+                                        else t.Speak("Peço desculpa, não entendi o que pertende alterar.");
 
                                         break;
 
