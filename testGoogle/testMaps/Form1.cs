@@ -107,6 +107,15 @@ namespace testMaps
                         case "DIRECTIONS":
                             command.getDirections(googledriver, coord,json);
                             break;
+                        case "MORE":
+                            command.zoomIn(googledriver, json);
+                            break;
+                        case "LESS":
+                            command.zoomOut(googledriver,json);
+                            break;
+                        case "CHANGE":
+                            command.changeView(googledriver,json);
+                            break;
                     }
                 }
             });

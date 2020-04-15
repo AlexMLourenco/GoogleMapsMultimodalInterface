@@ -386,9 +386,8 @@
       <item repeat="0-1">para</item>
     </one-of>
     <one-of>
-      <item>satélite<tag>out.view="SATÉLITE"</tag></item>
+      <item>satélite<tag>out.view="SATELITE"</tag></item>
       <item>mapa<tag>out.view="MAPA"</tag></item>
-      <item>3 D<tag>out.view="3D"</tag></item>
     </one-of>
   </rule>
   

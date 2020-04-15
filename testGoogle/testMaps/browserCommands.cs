@@ -42,16 +42,16 @@ namespace testMaps
             string[] coordenadas = location.getCoords();
             switch ((string)json.mode.ToString())
             {
-                case "walking": 
+                case "WALKING": 
                         mode = 2;
                     break;
-                case "driving": 
+                case "DRIVING": 
                         mode = 0;
                     break;
-                case "bicycling": 
+                case "BICYCLING": 
                         mode = 1;
                     break;
-                case "transit": 
+                case "TRANSIT": 
                         mode = 3;
                     break;
             }
@@ -90,8 +90,28 @@ namespace testMaps
             driver.FindElement(By.Id("sb_ifc52")).SendKeys(tmpInput);
             driver.FindElement(By.Id("searchboxinput")).SendKeys(Keys.Enter);
             */
-
-
+        }
+        public void zoomIn(IWebDriver driver, dynamic json)
+        {
+            if((string)json.zoom != null)
+            {
+                driver.FindElement(By.Id("widget-zoom-in")).Click();
+            }
+        }
+        public void zoomOut(IWebDriver driver, dynamic json)
+        {
+            if ((string)json.zoom != null)
+            {
+                driver.FindElement(By.Id("widget-zoom-out")).Click();
+            }
+        }
+        public void changeView(IWebDriver driver, dynamic json)
+        {
+            Thread.Sleep(2000);
+            driver.FindElement(By.XPath("//*[@id='minimap']/div/div[2]/button")).Click();
+               
+            Thread.Sleep(2000);
+           
 
         }
     }

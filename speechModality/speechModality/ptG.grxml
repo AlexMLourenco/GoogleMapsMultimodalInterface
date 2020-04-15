@@ -380,15 +380,12 @@
   <!-- Rules for view-->
   <rule id="view">
     <one-of>
-      <item repeat="0-1">vista</item>
       <item repeat="0-1">modo</item>
-      <item repeat="0-1">visualização</item>
       <item repeat="0-1">para</item>
     </one-of>
     <one-of>
-      <item>satélite<tag>out.view="SATÉLITE"</tag></item>
-      <item>mapa<tag>out.view="MAPA"</tag></item>
-      <item>3 D<tag>out.view="3D"</tag></item>
+      <item>visualização<tag>out.view="view"</tag></item>
+      <item>vista<tag>out.view="view"</tag></item>
     </one-of>
   </rule>
   

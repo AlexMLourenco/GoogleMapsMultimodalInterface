@@ -237,13 +237,14 @@ namespace speechModality {
                         StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
                         dynamic tojson2 = JsonConvert.DeserializeObject(reader.ReadToEnd());
                         if((string)tojson2.status.ToString() == "OK") {
-                            speach = (string.Format("O local mais próximo é o {0}", (string)tojson2.results[0].name.ToString()));
+                            speach = (string)tojson2.results[0].name.ToString();  
+                            //(string.Format("O local mais próximo é o {0}", (string)tojson2.results[0].name.ToString()));
                             //Console.WriteLine("O local mais próximo é o {0}", (string)tojson2.results[0].name.ToString());
                             found = true;
                         } else {
                             //Console.WriteLine("aumentei" + radius);
                             radius += 100;
-                            speach = "Não foi encontrado nenhum resultado num raio de 1 quilometro da sua localização.";
+                            speach = "";// "Não foi encontrado nenhum resultado num raio de 1 quilometro da sua localização.";
                         }
                     }
                 } catch (WebException ex) {
@@ -327,5 +328,20 @@ namespace speechModality {
         }
 
         public void setLocation() { myLocation.GetLocationEvent(); }
+
+        public string speak(string name )
+        {
+            String p = "";
+            if(name != "")
+            {
+                p = (string.Format("O local mais próximo é o {0}", name));
+            }
+            else
+            {
+                p = "Não foi encontrado nenhum resultado num raio de 1 quilometro da sua localização.";
+            }
+
+            return p;
+        }
     }
 }
