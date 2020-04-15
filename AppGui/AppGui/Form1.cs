@@ -24,7 +24,7 @@ using OpenQA.Selenium;
 using System.Windows.Threading;
 using Keys = OpenQA.Selenium.Keys;
 
-namespace testMaps
+namespace AppGui
 {
     public partial class Form1 : Form
     {

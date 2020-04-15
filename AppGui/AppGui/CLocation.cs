@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net;
 using System.IO;
 
-namespace testMaps
+namespace AppGui
 {
     class CLocation
     {

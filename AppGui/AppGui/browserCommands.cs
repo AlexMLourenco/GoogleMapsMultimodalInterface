@@ -9,7 +9,8 @@ using System.Windows.Threading;
 using Keys = OpenQA.Selenium.Keys;
 using System.Threading;
 
-namespace testMaps
+namespace AppGui
+
 {
     class browserCommands
     {

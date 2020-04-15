@@ -1,5 +1,5 @@
 ﻿
-namespace testMaps
+namespace AppGui
 {
     partial class Form1
     {
