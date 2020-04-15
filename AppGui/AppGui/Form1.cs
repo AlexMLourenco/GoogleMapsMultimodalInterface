@@ -26,11 +26,10 @@ using Keys = OpenQA.Selenium.Keys;
 
 namespace AppGui
 {
-    public partial class Form1 : Form
-    {
+    public partial class Form1 : Form {
         private MmiCommunication mmiC;
-        IWebDriver googledriver = new ChromeDriver(@"C:\Users\manel\Desktop\IM\Projeto\GoogleMapsMultimodalInterface");
         private String startupPath = Environment.CurrentDirectory;
+        IWebDriver googledriver;
         private String path = "";
         private browserCommands command;
         private string[] coords = new string[2];
@@ -52,6 +51,7 @@ namespace AppGui
         }
 
         private void Form1_Load(object sender, EventArgs e) {
+            googledriver = new ChromeDriver(@"" + startupPath + "/../../../../");
             path = startupPath + "/../../html/googleMaps.html";
             webBrowser1.Navigate(new System.Uri(@"file:///"+path));
             googledriver.Navigate().GoToUrl("https://www.google.pt/maps");
