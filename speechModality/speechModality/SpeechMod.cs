@@ -223,26 +223,26 @@ namespace speechModality {
                                         // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
                                             if ((string)tojson.location != null)
                                             {
-                                                t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString() + " em " + (string)tojson.location.ToString());
-                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.service.ToString() + " em " + (string)tojson.location.ToString());
+                                                t.Speak("Foram pedidas direcções para " + (string)tojson.service.ToString() + " em " + (string)tojson.location.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para " + (string)tojson.service.ToString() + " em " + (string)tojson.location.ToString());
                                             }
                                             else
                                             {
-                                                t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString());
-                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.service.ToString());
+                                                t.Speak("Foram pedidas direcções para " + (string)tojson.service.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para " + (string)tojson.service.ToString());
                                             }
                                         }
                                         else if ((string)tojson.local != null) {
                                         // McDonalds, Continente, Forum, Glicinias, Altice, Ria
                                             if ((string)tojson.location != null)
                                             {
-                                                t.Speak("Foram pedidas direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
-                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
+                                                t.Speak("Foram pedidas direcções para " + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para " + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
                                             }
                                             else
                                             {
-                                                t.Speak("Foram pedidas direcções para" + (string)tojson.local.ToString());
-                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.local.ToString());
+                                                t.Speak("Foram pedidas direcções para " + (string)tojson.local.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para " + (string)tojson.local.ToString());
                                             }
                                         }
                                         break;
@@ -260,7 +260,7 @@ namespace speechModality {
                         }
                         //});
                         var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
-                        Console.WriteLine((string)exNot.ToString());
+                        //Console.WriteLine((string)exNot.ToString());
                         mmic.Send(exNot);
                     }
                 }

@@ -37,7 +37,7 @@ namespace speechModality {
             }
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            Console.WriteLine(URL);
+           
             try {
                 string distancia = "";
                 string name = "";
@@ -228,7 +228,7 @@ namespace speechModality {
 
             while (!found && radius < 1000) {
                 string URL2 = URL + string.Format("&radius={0}", radius);
-                Console.WriteLine(URL2);
+                
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL2);
                 try {
      
@@ -291,7 +291,7 @@ namespace speechModality {
             }
                
 
-            Console.WriteLine(URL);
+            
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
 
             try {
@@ -304,7 +304,7 @@ namespace speechModality {
                     int length = items.Count;
                     for (int i = 0; i < items.Count; i++)
                     {
-                        Console.WriteLine((string)items[i].ToString());
+                        
                         //do something with item
                     }
 
