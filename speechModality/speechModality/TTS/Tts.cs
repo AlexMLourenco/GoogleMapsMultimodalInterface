@@ -6,11 +6,12 @@ using System.Text;
 using System.Media;
 using Microsoft.Speech.Synthesis;
 using Microsoft.Speech.AudioFormat;
-
+using Microsoft.Speech.Recognition;
 
 class Tts
 {
     SpeechSynthesizer tts = null;
+    SpeechRecognitionEngine sre;
     static SoundPlayer player = new SoundPlayer();
     private bool isOn;
     public Queue<String> queue = new Queue<String>();
@@ -18,9 +19,9 @@ class Tts
     /*
      * Text to Speech
      */
-    public Tts()
+    public Tts(SpeechRecognitionEngine sre)
     {
-
+        this.sre = sre;
 
         Console.WriteLine("TTS constructor called");
 
@@ -94,6 +95,7 @@ class Tts
      */
     public void Speak(string text)
     {
+        sre.RecognizeAsyncStop();
         queue.Enqueue(text);
 
         Console.WriteLine("1");
@@ -106,6 +108,7 @@ class Tts
         player.Stream = new System.IO.MemoryStream();
         tts.SetOutputToWaveStream(player.Stream);
         isOn = true;
+
         tts.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(tts_SpeakCompleted);
         tts.SpeakAsync(queue.Peek());
        
@@ -114,7 +117,7 @@ class Tts
 
     public void Speak(string text, int rate)
     {
-
+        sre.RecognizeAsyncStop();
         Console.WriteLine("Speak method called , version with samplerate parameter");
 
         while (player.Stream != null)
@@ -131,7 +134,7 @@ class Tts
 
 
         Console.WriteLine("... calling  SpeakSsmlAsync()");
-
+     
         tts.SpeakSsmlAsync(text);
 
         Console.WriteLine("done  SpeakSsmlAsync().\n");
@@ -150,8 +153,10 @@ class Tts
             player.PlaySync();
             player.Stream = null;  //  NEW 2015
             queue.Dequeue();
-
+            sre.SetInputToDefaultAudioDevice();
+            sre.RecognizeAsync(RecognizeMode.Multiple);
         }
+        
 
     }
 }

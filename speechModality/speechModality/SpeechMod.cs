@@ -42,11 +42,12 @@ namespace speechModality {
             gr = new Grammar(Environment.CurrentDirectory + "\\ptG.grxml", "rootRule");
             sre.LoadGrammar(gr);
 
-            t = new Tts();
+            
             sre.SetInputToDefaultAudioDevice();
             sre.RecognizeAsync(RecognizeMode.Multiple);
             sre.SpeechRecognized += Sre_SpeechRecognized;
             sre.SpeechHypothesized += Sre_SpeechHypothesized;
+            t = new Tts(sre);
         }
 
         private void Sre_SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e) {
@@ -253,6 +254,7 @@ namespace speechModality {
                                     }
 
                                 } else {
+                                    //sre.RecognizeAsyncStop();
                                     t.Speak("Olá! Como posso ajudar?");
                                     Console.WriteLine("Olá! Como posso ajudar?");
                         }
