@@ -64,15 +64,15 @@ namespace speechModality {
                 foreach (var resultSemantic in e.Result.Semantics) { 
                     foreach (var key in resultSemantic.Value) {
                         json += "\"" + key.Key + "\": " + "\"" + key.Value.Value + "\",\n ";
-                        Console.WriteLine(key.Key);
+                        
                     }
                 }
                 json += "\"" + "mode" + "\": " + "\"" + this.mode + "\",\n ";
                 json = json.Substring(0, json.Length - 1);
                 json += "\n}";
-                Console.WriteLine(json);
+                
                 dynamic tojson = JsonConvert.DeserializeObject(json);
-                Console.WriteLine(tojson);
+                
 
                 if (tojson.wake != null) {
                     wake = true;
@@ -93,9 +93,11 @@ namespace speechModality {
                                         if ((string)tojson.info != null) {
                                             if ((string)tojson.service != null) {
                                                 t.Speak(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info));
+                                                Console.WriteLine(api.GetInfo((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.info));
                                             }
                                             else if ((string)tojson.local != null) {
                                                 t.Speak(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info));
+                                                Console.WriteLine(api.GetInfo((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.info));
                                             }
                                         }
 
@@ -110,11 +112,13 @@ namespace speechModality {
 
                                                     name = api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.location.ToString());
                                                     t.Speak(api.speak(name));
+                                                    Console.WriteLine(api.speak(name));
                                                 }
                                                 // Number of inputs(restaurants, coffee, etc) in a radious of 5km from that location
                                                 else { 
                                                     t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), null, (string)tojson.location.ToString()));
                                                     t.Speak(api.speak(name));
+                                                    Console.WriteLine(api.speak(name));
                                                 }
 
                                             } // When the input DOESN'T contain an location (use coordinates)
@@ -124,10 +128,12 @@ namespace speechModality {
                                                 {
                                                     name = (api.GetClosestPlace((string)tojson.ToString(), (string)tojson.service.ToString(), null, null));
                                                     t.Speak(api.speak(name));
+                                                    Console.WriteLine(api.speak(name));
                                                 }
                                                 // Number of inputs (restaurants, coffee, etc) in a radious of 5km from that coordinates
                                                 else
                                                     t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), null, null));
+                                                    Console.WriteLine(api.GetClosestPlaceCounter((string)tojson.ToString(), (string)tojson.service.ToString(), null, null));
                                                 }
                                             if (name != "")
                                             {
@@ -145,25 +151,30 @@ namespace speechModality {
                                                 {
                                                     name = (api.GetClosestPlace((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.location.ToString()));
                                                     t.Speak(api.speak(name));
+                                                    Console.WriteLine(api.speak(name));
                                                 }
                                                 // Number of inputs(McDonald's, Forum, etc) in a radious of 5km from that location
                                                 else
+                                                {
                                                     t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.location.ToString()));
-                                            
+                                                    Console.WriteLine(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), (string)tojson.location.ToString()));
 
-                                                } // When the input DOESN'T contain an location (use coordinates)
+                                                }
+                                            } // When the input DOESN'T contain an location (use coordinates)
                                             else {
                                             // Get the closest input using coordinates (McDonald's, Forum, etc)
                                                 if ((string)tojson.nearby != null)
                                                 {
                                                     name = (api.GetClosestPlace((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
                                                     t.Speak(api.speak(name));
+                                                    Console.WriteLine(api.speak(name));
                                                 }
 
                                                 // Number of inputs (McDonald's, Forum, etc) in a radious of 5km from that coordinates
                                                 else
                                                     t.Speak(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
-                                                }
+                                                    Console.WriteLine(api.GetClosestPlaceCounter((string)tojson.ToString(), null, (string)tojson.local.ToString(), null));
+                                        }
                                             if (name != ""){
                                                 tojson.local = name;
                                                 json = JsonConvert.SerializeObject(tojson);
@@ -175,12 +186,15 @@ namespace speechModality {
                                     case "MORE":    // More zoom
 
                                         if ((string)tojson.zoom != null)
+                                            t.Speak("Aumentei zoom");
                                             Console.WriteLine("Aumentei o zoom");
                                         break;
 
                                     case "LESS":    // Less zoom
 
                                         if ((string)tojson.zoom != null)
+
+                                            t.Speak("Diminui zoom");
                                             Console.WriteLine("Diminui o zoom");
                                         break;
 
@@ -194,6 +208,7 @@ namespace speechModality {
                                                 // Default: carro; Others: pé, bicicleta, metro, comboio, transportes publicos
                                                 mode = (string)tojson.transport.ToString();
                                                 t.Speak(string.Format("Modo de transporte alterado para {0}", api.Translate(mode)));
+                                                Console.WriteLine("Modo de transporte alterado para {0}", api.Translate(mode));
                                             }
                                             else t.Speak("Peço desculpa, não entendi o meio de transporte.");
                                         }
@@ -204,19 +219,31 @@ namespace speechModality {
                                     case "DIRECTIONS":
 
                                         if ((string)tojson.service != null) {
-                                            // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
+                                        // Restaurante, Bar, Cafe, Padaria, Hotel, PSP, CGD
                                             if ((string)tojson.location != null)
-                                                t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString() + " em " +(string)tojson.location.ToString());
+                                            {
+                                                t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString() + " em " + (string)tojson.location.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.service.ToString() + " em " + (string)tojson.location.ToString());
+                                            }
                                             else
+                                            {
                                                 t.Speak("Foram pedidas direcções para" + (string)tojson.service.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.service.ToString());
+                                            }
                                         }
                                         else if ((string)tojson.local != null) {
-                                            // McDonalds, Continente, Forum, Glicinias, Altice, Ria
+                                        // McDonalds, Continente, Forum, Glicinias, Altice, Ria
                                             if ((string)tojson.location != null)
+                                            {
                                                 t.Speak("Foram pedidas direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
+                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.local.ToString() + " em " + (string)tojson.location.ToString());
+                                            }
                                             else
+                                            {
                                                 t.Speak("Foram pedidas direcções para" + (string)tojson.local.ToString());
-                                    }
+                                                Console.WriteLine("Foram pedidas direcções para" + (string)tojson.local.ToString());
+                                            }
+                                        }
                                         break;
 
                                     case "SHUTDOWN":
@@ -225,7 +252,10 @@ namespace speechModality {
                                             break;
                                     }
 
-                                } else { t.Speak("Olá! Como posso ajudar?"); }
+                                } else {
+                                    t.Speak("Olá! Como posso ajudar?");
+                                    Console.WriteLine("Olá! Como posso ajudar?");
+                        }
                         //});
                         var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime + "", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration) + "", e.Result.Confidence, json);
                         Console.WriteLine((string)exNot.ToString());

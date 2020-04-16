@@ -37,23 +37,24 @@ namespace AppGui
             driver.FindElement(By.Id("searchboxinput")).SendKeys(Keys.Enter);
         }
 
-        public void getDirections(IWebDriver driver, CLocation location, dynamic json){
+        public void getDirections(IWebDriver driver, CLocation location, dynamic json)
+        {
             string tmpInput = "";
             int mode = 6;
             string[] coordenadas = location.getCoords();
             switch ((string)json.mode.ToString())
             {
-                case "WALKING": 
-                        mode = 2;
+                case "WALKING":
+                    mode = 2;
                     break;
-                case "DRIVING": 
-                        mode = 0;
+                case "DRIVING":
+                    mode = 0;
                     break;
-                case "BICYCLING": 
-                        mode = 1;
+                case "BICYCLING":
+                    mode = 1;
                     break;
-                case "TRANSIT": 
-                        mode = 3;
+                case "TRANSIT":
+                    mode = 3;
                     break;
             }
             if ((string)json.service != null)
@@ -70,27 +71,22 @@ namespace AppGui
                 if ((string)json.location != null)
                     tmpInput += " " + (string)json.location.ToString();
             }
-            Console.WriteLine("mode "+ mode.ToString());
+            Console.WriteLine("mode " + mode.ToString());
             driver.Navigate().GoToUrl("https://www.google.pt/maps");
             driver.FindElement(By.Id("searchbox-directions")).Click();
             Thread.Sleep(2000);
             driver.FindElement(By.CssSelector(string.Format("div[data-travel_mode='{0}']", mode))).Click();
-            
+
             Thread.Sleep(500);
             // origem
             driver.FindElement(By.XPath("//*[@id='sb_ifc51']/input")).Click();
             driver.FindElement(By.XPath("//*[@id='sb_ifc51']/input")).SendKeys(string.Format("{0},{1}", coordenadas[0], coordenadas[1]));
-            //driver.FindElement(By.Id("sb_ifc51")).SendKeys(string.Format("{0},{1}", coordenadas[0], coordenadas[1]));
+
             // destino
             Thread.Sleep(500);
             driver.FindElement(By.XPath("//*[@id='sb_ifc52']/input")).Click();
             driver.FindElement(By.XPath("//*[@id='sb_ifc52']/input")).SendKeys(tmpInput);
             driver.FindElement(By.XPath("//*[@id='sb_ifc52']/input")).SendKeys(Keys.Enter);
-            /*
-            
-            driver.FindElement(By.Id("sb_ifc52")).SendKeys(tmpInput);
-            driver.FindElement(By.Id("searchboxinput")).SendKeys(Keys.Enter);
-            */
         }
         public void zoomIn(IWebDriver driver, dynamic json)
         {

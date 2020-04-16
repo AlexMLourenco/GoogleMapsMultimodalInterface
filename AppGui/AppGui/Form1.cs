@@ -42,7 +42,7 @@ namespace AppGui
         public Form1() {
             InitializeComponent();
             this.coord.GetLocationEvent();
-            button1.Click += new EventHandler(button1_Click);
+            
             mmiC = new MmiCommunication("localhost", 8000, "User1", "GUI");
             command = new browserCommands();
             mmiC.Message += MmiC_Message;
@@ -53,36 +53,12 @@ namespace AppGui
         private void Form1_Load(object sender, EventArgs e) {
             googledriver = new ChromeDriver(@"" + startupPath + "/../../../../");
             path = startupPath + "/../../html/googleMaps.html";
-            webBrowser1.Navigate(new System.Uri(@"file:///"+path));
+            
             googledriver.Navigate().GoToUrl("https://www.google.pt/maps");
-            //googledriver.Navigate().Back();
-            //id = "searchboxinput"
-
 
 
         }
 
-        private void button1_Click(object sender, EventArgs e) {
-            /*
-            if(this.flag == false) {
-                this.coords = this.coord.getCoords();
-                string street = this.coord.GetCoordinates(this.coords);
-                this.URL = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCxJd14el9dRqIkvYqFwEx_zz8zwkTAlaU&q=" + street;
-                Console.WriteLine(this.URL);
-                this.street = street;
-                this.flag = true;
-            }
-            */
-
-            /*
-            HtmlDocument html = this.webBrowser1.Document; 
-            HtmlElementCollection doc = html.GetElementsByTagName("iframe").GetElementsByName("iframe1");//.SetAttribute("src", "ola");
-            foreach (HtmlElement elem in doc){
-                elem.SetAttribute("src", this.URL);    
-            }   
-            */
-           
-        }
 
         private void MmiC_Message(object sender, MmiEventArgs e)
         {
